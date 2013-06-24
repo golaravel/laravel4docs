@@ -8,7 +8,7 @@
     - [Request的生命周期](/docs/lifecycle)
     - [路由](/docs/routing)
     - [Requests & Input](/docs/requests)
-    - [Views & Responses](/docs/responses)
+    - [视图 & Response](/docs/responses)
     - [控制器](/docs/controllers)
     - [错误 & 日志](/docs/errors)
 - 深度历险
@@ -38,3 +38,5 @@
 - Artisan CLI
     - [概览](/docs/artisan)
     - [开发工具](/docs/commands)
+- 贡献者
+    - [中文翻译贡献者名单](/docs/contributors)
