@@ -3,6 +3,7 @@
 - [王赛](#wangsai)
 - [苏小林](#suxiaolin)
 - [徐小花](#xuxiaohua)
+- [何文祥](#hewenxiang)
 
 <a name="wangsai"></a>
 ## 王赛
@@ -22,3 +23,9 @@
 - 邮箱：kisexu@gmail.com
 - 网址：[kisexu.com](http://kisexu.com)
 - 开源项目： [花密](http://flowerpassword.com)
+
+<a name="hewenxiang"></a>
+## 何文祥
+- 邮箱：erhuabushuo@gmail.com
+- 网址：[hewenxiang.cn](http://hewenxiang.cn)
+- Github: [https://github.com/erhuabushuo/](https://github.com/erhuabushuo/)
