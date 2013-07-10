@@ -44,6 +44,7 @@ Laravel 4终于在2013年5月29号发布了正式版，很多Laravel粉丝也将
     - testing.md
     - quick.md
     - ioc.md
+    - facades.md
 
 
 ##版权协议##
