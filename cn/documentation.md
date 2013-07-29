@@ -2,7 +2,7 @@
     - [简介](/docs/introduction)
     - [快速入门](/docs/quick)
     - [为Laravel做贡献](/docs/contributing)
-- 快速入门
+- 开始学习
     - [安装](/docs/installation)
     - [配置](/docs/configuration)
     - [Request的生命周期](/docs/lifecycle)
@@ -20,22 +20,22 @@
     - [IoC 容器](/docs/ioc)
     - [本地化](/docs/localization)
     - [邮件](/docs/mail)
-    - [Package Development](/docs/packages)
+    - [扩展包开发](/docs/packages)
     - [分页](/docs/pagination)
-    - [Queues](/docs/queues)
+    - [队列](/docs/queues)
     - [安全](/docs/security)
     - [Session](/docs/session)
     - [模版](/docs/templates)
     - [单元测试](/docs/testing)
-    - [Validation](/docs/validation)
+    - [验证](/docs/validation)
 - 数据库
     - [基本用法](/docs/database)
-    - [Query Builder](/docs/queries)
+    - [查询构造器](/docs/queries)
     - [Eloquent ORM](/docs/eloquent)
     - [Schema Builder](/docs/schema)
     - [Migrations & Seeding](/docs/migrations)
     - [Redis](/docs/redis)
-- Artisan CLI
+- Artisan 命令行工具
     - [概览](/docs/artisan)
     - [开发工具](/docs/commands)
 - 贡献者
