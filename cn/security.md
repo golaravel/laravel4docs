@@ -290,6 +290,7 @@ Laravel 提供了强大的 AES-256 加密，通过使用 mcrypt PHP 扩展：
 	$encrypted = Crypt::encrypt('secret');
 
 > **注意:** 确认在 `app/config/app.php` 文件设置了一个32随机字符给 `key` 项。否则，加密的值不安全。
+
 **解密**
 
 	$decrypted = Crypt::decrypt($encryptedValue);

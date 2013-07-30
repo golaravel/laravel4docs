@@ -90,7 +90,6 @@ For more information on how to use the crawler, refer to its [official documenta
 ## Mocking Facades
 
 在测试时， 你可能经常会想要模拟一次调用 Laravel 静态外观。例如，考虑如下控制器行为：
-When testing, you may often want to mock a call to a Laravel static facade. For example, consider the following controller action:
 
 	public function getIndex()
 	{
@@ -99,9 +98,9 @@ When testing, you may often want to mock a call to a Laravel static facade. For 
 		return 'All done!';
 	}
 
-我可以通过使用 `shouldReceive` 方法在模拟执行 `Event` 类
+我可以通过在 facade 使用 `shouldReceive` 方法在模拟执行 `Event` 类, 它将返回一个 [Mockery](https://github.com/padraic/mockery) 实例。
 
-We can mock the call to the `Event` class by using the `shouldReceive` method on the facade, which will return an instance of a [Mockery](https://github.com/padraic/mockery) mock.
+
 
 **Mocking A Facade**
 
