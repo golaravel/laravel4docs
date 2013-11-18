@@ -1,33 +1,35 @@
 # 对框架进行扩展
 
 - [介绍](#introduction)
-- [Managers & Factories](#managers-and-factories)
-- [Cache](#cache)
-- [Session](#session)
-- [Authentication](#authentication)
-- [IoC Based Extension](#ioc-based-extension)
-- [Request Extension](#request-extension)
+- [管理者 & 工厂](#managers-and-factories)
+- [缓存](#cache)
+- [Session会话](#session)
+- [用户验证](#authentication)
+- [基于IoC的扩展](#ioc-based-extension)
+- [请求(Request)相关扩展](#request-extension)
 
 <a name="introduction"></a>
 ## 介绍
+Laravel 为你提供了很多可扩展的地方, 通过它们你可以定制框架中一些核心组件的行为,甚至对这些核心组件进行全部替换. 例如, 哈希组件是在 "HaserInterface" 接口中被定义的,你可以根据自己应用程序的需求来选择是否实现它. 你也可以扩展 "Request" 对象来添加专属你的"帮助"方法.你甚至可以添加全新的 用户验证,缓存以及会话(Session) 驱动!
 
-Laravel offers many extension points for you to customize the behavior of the framework's core components, or even replace them entirely. For example, the hashing facilities are defined by a `HasherInterface` contract, which you may implement based on your application's requirements. You may also extend the `Request` object, allowing you to add your own convenient "helper" methods. You may even add entirely new authentication, cache, and session drivers!
+Laravel 的组件通常以两种方式进行扩展:在IoC容器中绑定新的实现,或者为一个扩展注册一个 "Manager" 类,这种方式运用了设计模式中"工厂"的理念.在这一章中,我们会探索扩展框架的各种方法以及查看一些必需的实现代码.
 
-Laravel components are generally extended in two ways: binding new implementations in the IoC container, or registering an extension with a `Manager` class, which are implementations of the "Factory" design pattern. In this chapter we'll explore the various methods of extending the framework and examine the necessary code.
-
-> **Note:** Remember, Laravel components are typically extended in one of two ways: IoC bindings and the `Manager` classes. The manager classes serve as an implementation of the "factory" design pattern, and are responsible for instantiating driver based facilities such as cache and session.
+> **注意:** 
+请记住,Laravel 组件的扩展通常是以一下两种方法的其中一种实现的:IoC绑定和 "Manager" 类. Manager类充当实现工厂模式的作用,它负责缓存、会话(Session)等基本驱动的实例化工作.
 
 <a name="managers-and-factories"></a>
-## Managers & Factories
+## 管理者 & 工厂
 
-Laravel has several `Manager` classes that manage the creation of driver-based components. These include the cache, session, authentication, and queue components. The manager class is responsible for creating a particular driver implementation based on the application's configuration. For example, the `CacheManager` class can create APC, Memcached, Native, and various other implementations of cache drivers.
+Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建工作. 包括 缓存、会话(Session)、用户验证以及队列组件。"Manager"类负责根据应用程序中相关配置来创建一个驱动实现。例如，"CacheManager"类可以创建 <a href="http://www.php.net/apc">APC</a>、Memcached、Native 以及其他各种缓存驱动的实现。
+每一个Manager类都包含有一个"extend"方法,通过它可以轻松的将新的驱动解决功能注入到Manager中. 下面,我们会通过列举向这些Manager中注入定制驱动的例子来依次对它们进行说明.
 
-Each of these managers includes an `extend` method which may be used to easily inject new driver resolution functionality into the manager. We'll cover each of these managers below, with examples of how to inject custom driver support into each of them.
 
-> **Note:** Take a moment to explore the various `Manager` classes that ship with Laravel, such as the `CacheManager` and `SessionManager`. Reading through these classes will give you a more thorough understanding of how Laravel works under the hood. All manager classes extend the `Illuminate\Support\Manager` base class, which provides some helpful, common functionality for each manager.
+> **注意:**
+花一些时间来探索Laravel中各种不同的"Manager"类,例如,"CacheManager"以及"SessionManager". 通过阅读这些类,可以让你对Laravel的底层实现有一个更加彻底的了解. 所有的"Manager"类都继承了"Illuminate\Support\Manager"基类, 这个基类为每一个"Manager"类提供了一些有用的,常见的功能.
+ 
 
 <a name="cache"></a>
-## Cache
+## 缓存
 
 To extend the Laravel cache facility, we will use the `extend` method on the `CacheManager`, which is used to bind a custom driver resolver to the manager, and is common across all manager classes. For example, to register a new cache driver named "mongo", we would do the following:
 
