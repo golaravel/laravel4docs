@@ -31,16 +31,16 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 <a name="cache"></a>
 ## 缓存
 
-To extend the Laravel cache facility, we will use the `extend` method on the `CacheManager`, which is used to bind a custom driver resolver to the manager, and is common across all manager classes. For example, to register a new cache driver named "mongo", we would do the following:
+要扩展Laravel的缓存机制,我们需要使用"CacheManager"的"extend"方法来为"manager"绑定一个定制的驱动解析器,这个解析器在所有的"manager"中都是通用的.例如,注册一个新的名叫"mongo"的缓存驱动,我们需要做一下操作:
+
 
 	Cache::extend('mongo', function($app)
 	{
 		// Return Illuminate\Cache\Repository instance...
 	});
+传入"extend"方法中的第一个参数是这个驱动的名字.这个会与你在"app/config/cache.php"文件中的"driver"选项相对应。第二个参数是一个返回"Illuminate\Cache\Repository"实例的闭包。 这闭包会传入"$app", 它是"Illuminate\Foundation\Application" 的一个实例而且是一个IoC容器.
 
-The first argument passed to the `extend` method is the name of the driver. This will correspond to your `driver` option in the `app/config/cache.php` configuration file. The second argument is a Closure that should return an `Illuminate\Cache\Repository` instance. The Closure will be passed an `$app` instance, which is an instance of `Illuminate\Foundation\Application` and an IoC container.
-
-To create our custom cache driver, we first need to implement the `Illuminate\Cache\StoreInterface` contract. So, our MongoDB cache implementation would look something like this:
+为了创建我们定制的缓存驱动,我们首先应该实现"Illuminate\Cache\StoreInterface"接口. 因此,我们的 MongDB 缓存的实现应该是这样的:
 
 	class MongoStore implements Illuminate\Cache\StoreInterface {
 
@@ -54,7 +54,7 @@ To create our custom cache driver, we first need to implement the `Illuminate\Ca
 
 	}
 
-We just need to implement each of these methods using a MongoDB connection. Once our implementation is complete, we can finish our custom driver registration:
+我们要用一个MongoDB连接来实现所有这些方法.一旦完成了这些实现,我们就完成了定制驱动的注册.
 
 	use Illuminate\Cache\Repository;
 
@@ -63,11 +63,14 @@ We just need to implement each of these methods using a MongoDB connection. Once
 		return new Repository(new MongoStore);
 	});
 
-As you can see in the example above, you may use the base `Illuminate\Cache\Repository` when creating custom cache drivers. There is typically no need to create your own repository class.
+正如你在上面的例子中所看到的,你会在创建定制缓存驱动时使用到"Illuminate\Cache\Repository"基类.通常情况下,不需要自己创建"Repository"类.
 
-If you're wondering where to put your custom cache driver code, consider making it available on Packagist! Or, you could create an `Extensions` namespace within your application's primary folder. For example, if the application is named `Snappy`, you could place the cache extension in `app/Snappy/Extensions/MongoStore.php`. However, keep in mind that Laravel does not have a rigid application structure and you are free to organize your application according to your preferences.
+如果你不知道将定制的缓存驱动代码放在哪里,那么可以考虑将它们放在<a href="https://packagist.org/">Packagist</a>中,或者你可以在应用程序的主目录下创建一个"Extension"命名空间.例如,如果你的应用程序叫"Snappy",你可以将你的缓存扩展放在"app/Snappy/Extensions/MongoStore.php"中. 请记住,Laravel对于应用程序的结构没有严格的限制,你可以自由地根据自己的选择来组织你的应用程序结构.
 
-> **Note:** If you're ever wondering where to put a piece of code, always consider a service provider. As we've discussed, using a service provider to organize framework extensions is a great way to organize your code.
+
+> **注意:** 
+当你不知道将代码放在哪里时,请回想一下"service provider" .  我们已经讨论过,利用"service provider"来组织你的框架扩展是组织代码的最好方式.
+
 
 <a name="session"></a>
 ## Session
