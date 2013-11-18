@@ -1,25 +1,25 @@
 # 单元测试
 
-- [介绍](#introduction)
-- [定义以及运行测试](#defining-and-running-tests)
+- [简介](#introduction)
+- [定义&运行测试](#defining-and-running-tests)
 - [测试环境](#test-environment)
 - [测试中执行路由](#calling-routes-from-tests)
-- [Mocking Facades](#mocking-facades)
-- [断言](#framework-assertions)
+- [模拟Facades](#mocking-facades)
+- [框架断言](#framework-assertions)
 - [辅助方法](#helper-methods)
 
 <a name="introduction"></a>
 ## 简介
 
-Laravel 自建了单元测试。实际上，也较好的支持 PHPUnit 测试，并且应用程序已经配置好了 `phpunit.xml` 文件。除了 PHPUnit，Laravel 也使用了 Symfony HttpKernel，DomCrawler 和 BrowserKit 组件，允许你在测试中检查和操作视图和模拟浏览器行为。
+Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 进行测试，并且已经为你的应用程序配置好了 `phpunit.xml` 文件。除了 PHPUnit，Laravel 也使用了 Symfony HttpKernel，DomCrawler 和 BrowserKit 组件，允许你在测试中检查和操作视图以及模拟浏览器行为。
 
-一个示例测试文件存放在 `app/tests` 目录。在安装了一个新的 Laravel 应用程序后，简单的执行 `phpunit` 在命令行中来运行测试。
+在 `app/tests` 目录下已经提供了一个测试示例文件。在安装了一个全新的 Laravel 应用程序之后，只需要简单的在命令行中执行 `phpunit`， 即可运行你的测试。
 
 
 <a name="defining-and-running-tests"></a>
-## 定义以及运行测试
+## 定义 & 运行测试
 
-要穿件一个测试用例，只需要简单的在 `app/tests` 目录创建测试文件。测试类需要继承 `TestCase` 。然后就如 PHPUnit 基本操作来定义测试方法。
+要创建一个测试用例，只需要简单的在 `app/tests` 目录创建一个新的测试文件。测试类需要继承 `TestCase` 。然后你可以像使用 PHPUnit 一样来定义这些测试方法。
 
 **一个测试类示例**
 
@@ -39,7 +39,7 @@ Laravel 自建了单元测试。实际上，也较好的支持 PHPUnit 测试，
 <a name="test-environment"></a>
 ## 测试环境
 
-在运行单元测试时，Laravel 自动将配置环境设置为 `testing` 。并且，Laravel 在测试环境中包含了 `session` 和 `cache` 配置文件。测试环境中，这两个驱动都被设置为空 `array`，意味着在测试过程中，不会将 session 或者 cache 持久化。必要时，你也可以创建其他的测试环境。
+在运行单元测试时，Laravel 将自动设置环境配置为 `testing` 。并且，Laravel 在测试环境中包含了 `session` 和 `cache` 配置文件。测试环境中，这两个驱动都被设置为空 `array`，意味着在测试过程中，不会将 session 或者 cache 持久化。必要时，你也可以创建其他的测试环境。
 
 <a name="calling-routes-from-tests"></a>
 ## 测试中执行路由
@@ -64,15 +64,17 @@ Laravel 自建了单元测试。实际上，也较好的支持 PHPUnit 测试，
 
 	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
 
-`getContent` 方法将会返回和响应相同字符串内容。如果路由返回 `视图` ， 你可以使用 `original` 属性来访问：
+`getContent` 方法将会返回和响应相同的字符串内容。如果路由返回 `视图（View）` ， 你可以使用 `original` 属性来访问：
 
 	$view = $response->original;
 
 	$this->assertEquals('John', $view['name']);
 
-要执行个 HTTPS 路由，可以使用 `callSecure` 方法：
+要执行一个 HTTPS 路由，可以使用 `callSecure` 方法：
 
 	$response = $this->callSecure('GET', 'foo/bar');
+
+> **注意：** 在测试环境中，路由过滤器将被禁用。如果需要启用它们, 请在你的测试中添加 `Route::enableFilters()` 。
 
 ### DOM Crawler
 
@@ -84,12 +86,12 @@ Laravel 自建了单元测试。实际上，也较好的支持 PHPUnit 测试，
 
 	$this->assertCount(1, $crawler->filter('h1:contains("Hello World!")'));
 
-For more information on how to use the crawler, refer to its [official documentation](http://symfony.com/doc/master/components/dom_crawler.html).
+如需获取更多关于 DOM Crawler 的信息，请参见文档 [official documentation](http://symfony.com/doc/master/components/dom_crawler.html)。
 
 <a name="mocking-facades"></a>
-## Mocking Facades
+## 模拟Facades
 
-在测试时， 你可能经常会想要模拟一次调用 Laravel 静态外观。例如，考虑如下控制器行为：
+在测试时，你可能经常需要模拟执行一个 Laravel 静态 facade。例如，参考如下控制器的动作：
 
 	public function getIndex()
 	{
@@ -98,11 +100,11 @@ For more information on how to use the crawler, refer to its [official documenta
 		return 'All done!';
 	}
 
-我可以通过在 facade 使用 `shouldReceive` 方法在模拟执行 `Event` 类, 它将返回一个 [Mockery](https://github.com/padraic/mockery) 实例。
+我们可以通过在 facade 使用 `shouldReceive` 方法来模拟执行 `Event` 类, 它将返回一个 [Mockery](https://github.com/padraic/mockery) 模拟的实例。
 
 
 
-**Mocking A Facade**
+**模拟一个Facade**
 
 	public function testGetIndex()
 	{
@@ -111,12 +113,12 @@ For more information on how to use the crawler, refer to its [official documenta
 		$this->call('GET', '/');
 	}
 
-> **Note:** You should not mock the `Request` facade. Instead, pass the input you desire into the `call` method when running your test.
+> **注意：** 你不能模拟 `Request` 的 facade。替代的方式为，在运行你的测试时，你预期的输入传给 `call` 方法。
 
 <a name="framework-assertions"></a>
-## 断言
+## 框架断言
 
-Laravel 提供了一些 `断言` 方法来让测试更加容易：
+Laravel 提供了一些 `断言（assert）` 方法来让测试更加容易：
 
 **断言响应为OK**
 
@@ -164,20 +166,20 @@ Laravel 提供了一些 `断言` 方法来让测试更加容易：
 
 `TestCase` 类包含一些辅助方法来让应用程序测试更加容易。
 
-你可以使用 `be` 方法来设置当前验证用户：
+你可以使用 `be` 方法来设置当前通过验证的用户：
 
-**设置当前验证用户**
+**设置当前通过验证的用户**
 
 	$user = new User(array('name' => 'John'));
 
 	$this->be($user);
 
-你可以在测试中使用 `seed` 方法来重播数据库：
+你可以在测试中使用 `seed` 方法来重新填充你的数据库：
 
-**测试中重播数据库**
+**测试中重新填充数据库**
 
 	$this->seed();
 
 	$this->seed($connection);
 
-更多关于创建播种信息请查看文档 [迁移和播种](/docs/migrations#database-seeding)。
+如需获取更多关于创建数据填充的信息，请参见文档 [迁移 & 数据填充](/docs/migrations#database-seeding)。
