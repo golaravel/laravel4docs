@@ -154,6 +154,15 @@
 
 注意，没有规定视图合成器类存放在哪里。因此，你可以任意存放，只要能在`composer.json`文件中指定位置并自动加载即可。
 
+### View Creators
+
+View **creators** work almost exactly like view composers; however, they are fired immediately when the view is instantiated. To register a view creator, simple use the `creator` method:
+
+	View::creator('profile', function($view)
+	{
+		$view->with('count', User::count());
+	});
+
 <a name="special-responses"></a>
 ## 特殊Response
 

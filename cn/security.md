@@ -180,6 +180,11 @@ HTTP 基本验证提供了快速的方法来在应用程序中验证用户，而
 		return Auth::onceBasic();
 	});
 
+If you are using PHP FastCGI, HTTP Basic authentication will not work correctly by default. The following lines should be added to your `.htaccess` file:
+
+	RewriteCond %{HTTP:Authorization} ^(.+)$
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 <a name="password-reminders-and-reset"></a>
 ## 密码提示和重置
 
@@ -264,7 +269,11 @@ HTTP 基本验证提供了快速的方法来在应用程序中验证用户，而
 
 	Route::post('password/reset/{token}', function()
 	{
-		$credentials = array('email' => Input::get('email'));
+		$credentials = array(
+		    'email' => Input::get('email'),
+		    'password' => Input::get('password'),
+		    'password_confirmation' => Input::get('password_confirmation')
+		);
 
 		return Password::reset($credentials, function($user, $password)
 		{
@@ -277,6 +286,8 @@ HTTP 基本验证提供了快速的方法来在应用程序中验证用户，而
 	});
 
 如果密码重置成功，`User` 实例以及密码将会传递到 Closure，允许你实际执行保存操作。然后，你可以在 `reset` 方法返回 `Redirect` 或是任何其他 Response 类型。注意 `reset` 方法会自动检查请求中 `token` 和 信息的有效性，并且匹配密码。
+
+By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
 
 同 `remind` 方法， 如果在重置密码时发生错误， `reset` 方法将会 `Redirect` 到当前URI，并带有 `error` 和 `reason` 变量。
 

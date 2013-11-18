@@ -76,6 +76,12 @@ Blade是Laravel框架下的一种简单又强大的模板引擎。
 
 	The current UNIX timestamp is {{ time() }}.
 
+If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
+
+**Displaying Raw Text With Curly Braces**
+
+	@{{ This will not be processed by Blade }}
+
 你可以使用三联大括号语法来避免输出：
 
 	Hello, {{{ $name }}}.

@@ -91,9 +91,9 @@ Laravel 对不同的缓存机制提供了一套统一的API。缓存配置信息
 
 **访问缓存区**
 
-	Cache::section('people')->put('John', $john);
+	Cache::section('people')->put('John', $john, $minutes);
 
-	Cache::section('people')->put('Anne', $anne);
+	Cache::section('people')->put('Anne', $anne, $minutes);
 
 你也可以从缓存区中取得缓存项，也可以使用其他的缓存方法，例如`increment`和`decrement`：
 

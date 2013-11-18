@@ -45,11 +45,12 @@
 
 `array_fetch` 获取多维数组的最终值，参数为 第一维的键.第二维的键.第三维的键.... 的形式，指定的维数 数组的形式需一致，否则Laravel将抛出'Undefined index'。
 
-	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
+	$array = array(
+		array('developer' => array('name' => 'Taylor')),
+		array('developer' => array('name' => 'Dayle')),
+	);
 
-	var_dump(array_fetch($array, 'name'));
-
-	// array('Taylor', 'Dayle');
+	$array = array_fetch($array, 'developer.name');
 
 ### array_first
 
@@ -157,7 +158,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### app_path
 
-获取 `application` (/app[laravel4]) 目录的绝对路径。
+获取 `app` (/app[laravel4]) 目录的绝对路径。
 
 ### base_path
 
@@ -169,7 +170,7 @@ array_first的第三个参数为该操作指定默认返回值，若匿名函数
 
 ### storage_path
 
-获取 `application/storage` 目录的绝对路径.
+获取 `app/storage` 目录的绝对路径.
 
 <a name="strings"></a>
 ## 字符串助手
@@ -282,6 +283,12 @@ Tranlate a given language line with inflection. Alias of `Lang::choice`.
 从指定的控制器的方法生成url。
 
 	$url = action('HomeController@getIndex', $params);
+
+### 路由
+
+为命名路由生成URL。
+
+	$url = route('routeName', $params);
 
 ### asset
 

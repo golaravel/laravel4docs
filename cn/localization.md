@@ -4,6 +4,7 @@
 - [语言文件](#language-files)
 - [基本用例](#basic-usage)
 - [复数形式](#pluralization)
+- [验证消息的本地化](#validation)
 
 <a name="introduction"></a>
 ## 简介
@@ -80,3 +81,9 @@ Laravel `Lang` 类提供非常方便的方法来从不同语言文件中取得�
 由于Laravel翻译机制是用Symfony的翻译组件，你也可以非常简单的创建更加复杂的复数形式规则：
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+
+
+<a name="validation"></a>
+## 验证
+
+对于验证功能中需要本地化的错误信息和提示信息，请参阅 <a href="/docs/validation#localization">相关文档</a>。

@@ -36,7 +36,11 @@ You may access all user input with a few simple methods. You do not need to worr
 
 	$input = Input::except('credit_card');
 
-Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
+When working on forms with "array" inputs, you may use dot notation to access the arrays:
+
+	$input = Input::get('products.0.name');
+
+> **Note:** Some JavaScript libraries such as Backbone may send input to the application as JSON. You may access this data via `Input::get` like normal.
 
 <a name="cookies"></a>
 ## Cookies
@@ -52,6 +56,12 @@ All cookies created by the Laravel framework are encrypted and signed with an au
 	$response = Response::make('Hello World');
 
 	$response->withCookie(Cookie::make('name', 'value', $minutes));
+
+**Queueing A Cookie For The Next Response**
+
+If you would like to set a cookie before a response has been created, use the `Cookie::queue()` method. The cookie will automatically be attached to the final response from your application.
+
+	Cookie::queue($name, $value, $minutes);
 
 **Creating A Cookie That Lasts Forever**
 
@@ -109,6 +119,14 @@ The object returned by the `file` method is an instance of the `Symfony\Componen
 **Retrieving The Path To An Uploaded File**
 
 	$path = Input::file('photo')->getRealPath();
+
+**Retrieving The Original Name Of An Uploaded File**
+
+	$name = Input::file('photo')->getClientOriginalName();
+
+**Retrieving The Extension Of An Uploaded File**
+
+	$extension = Input::file('photo')->getClientOriginalExtension();
 
 **Retrieving The Size Of An Uploaded File**
 

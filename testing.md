@@ -73,6 +73,8 @@ To call a HTTPS route, you may use the `callSecure` method:
 
 	$response = $this->callSecure('GET', 'foo/bar');
 
+> **Note:** Route filters are disabled when in the testing environment. To enable them, add `Route::enableFilters()` to your test.
+
 ### DOM Crawler
 
 You may also call a route and receive a DOM Crawler instance that you may use to inspect the content:
@@ -103,7 +105,7 @@ We can mock the call to the `Event` class by using the `shouldReceive` method on
 
 	public function testGetIndex()
 	{
-		Event::shouldReceive('fire')->once()->with(array('name' => 'Dayle'));
+		Event::shouldReceive('fire')->once()->with('foo', array('name' => 'Dayle'));
 
 		$this->call('GET', '/');
 	}

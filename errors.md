@@ -44,6 +44,8 @@ To listen for PHP fatal errors, you may use the `App::fatal` method:
 		//
 	});
 
+If you have several exception handlers, they should be defined from most generic to most specific. So, for example, a handler that handles all exceptions of type `Exception` should be defined before a custom exception type such as `Illuminate\Encryption\DecryptException`.
+
 <a name="http-exceptions"></a>
 ## HTTP Exceptions
 
@@ -81,6 +83,10 @@ The Laravel logging facilities provide a simple layer on top of the powerful [Mo
 	Log::error('Something is really going wrong.');
 
 The logger provides the seven logging levels defined in [RFC 5424](http://tools.ietf.org/html/rfc5424): **debug**, **info**, **notice**, **warning**, **error**, **critical**, and **alert**.
+
+An array of contextual data may also be passed to the log methods:
+
+	Log::info('Log message', array('context' => 'Other helpful information'));
 
 Monolog has a variety of additional handlers you may use for logging. If needed, you may access the underlying Monolog instance being used by Laravel:
 

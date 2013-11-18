@@ -86,10 +86,12 @@
 		 */
 		public function __construct()
 		{
-			$this->beforeFilter(function()
-			{
-				//
-			});
+			$this->beforeFilter('auth', array('except' => 'getLogin'));
+
+			$this->beforeFilter('csrf', array('on' => 'post'));
+
+			$this->afterFilter('log', array('only' =>
+								array('fooAction', 'barAction')));
 		}
 
 	}
@@ -142,15 +144,15 @@ Laravel框架中，你可以使用简单的REST命名规范，轻松定义单个
 
 **资源控制器中不同操作的用途**
 
-Verb      | Path                  | Action       | Route Name
-----------|-----------------------|--------------|---------------------
-GET       | /resource             | index        | resource.index
-GET       | /resource/create      | create       | resource.create
-POST      | /resource             | store        | resource.store
-GET       | /resource/{id}        | show         | resource.show
-GET       | /resource/{id}/edit   | edit         | resource.edit
-PUT/PATCH | /resource/{id}        | update       | resource.update
-DELETE    | /resource/{id}        | destroy      | resource.destroy
+Verb      | Path                        | Action       | Route Name
+----------|-----------------------------|--------------|---------------------
+GET       | /resource                   | index        | resource.index
+GET       | /resource/create            | create       | resource.create
+POST      | /resource                   | store        | resource.store
+GET       | /resource/{resource}        | show         | resource.show
+GET       | /resource/{resource}/edit   | edit         | resource.edit
+PUT/PATCH | /resource/{resource}        | update       | resource.update
+DELETE    | /resource/{resource}        | destroy      | resource.destroy
 
 有时你也许只需要处理其中一部分资源操作：
 
@@ -162,6 +164,9 @@ DELETE    | /resource/{id}        | destroy      | resource.destroy
 
 	Route::resource('photo', 'PhotoController',
 					array('only' => array('index', 'show')));
+
+	Route::resource('photo', 'PhotoController',
+					array('except' => array('create', 'store', 'update', 'delete')));
 
 <a name="handling-missing-methods"></a>
 ## 处理空方法 （Handling Missing Methods）

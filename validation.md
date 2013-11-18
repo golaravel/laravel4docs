@@ -4,6 +4,7 @@
 - [Working With Error Messages](#working-with-error-messages)
 - [Error Messages & Views](#error-messages-and-views)
 - [Available Validation Rules](#available-validation-rules)
+- [Conditionally Adding Rules](#conditionally-adding-rules)
 - [Custom Error Messages](#custom-error-messages)
 - [Custom Validation Rules](#custom-validation-rules)
 
@@ -29,6 +30,21 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
+	
+**Validating Multiple Fields**
+
+    $validator = Validator::make(
+        array(
+            'name' => 'Dayle',
+            'password' => 'lamepassword',
+            'email' => 'email@example.com'
+        ),
+        array(
+            'name' => 'required',
+            'password' => 'required|min:8',
+            'email' => 'required|email|unique:users'
+        )
+    );
 
 Once a `Validator` instance has been created, the `fails` (or `passes`) method may be used to perform the validation.
 
@@ -154,6 +170,7 @@ Below is a list of all available validation rules and their function:
 - [Required](#rule-required)
 - [Required If](#rule-required-if)
 - [Required With](#rule-required-with)
+- [Required Without](#rule-required-without)
 - [Same](#rule-same)
 - [Size](#rule-size)
 - [Unique (Database)](#rule-unique)
@@ -227,7 +244,7 @@ The field under validation must be formatted as an e-mail address.
 <a name="rule-exists"></a>
 #### exists:_table_,_column_
 
-The field under validation must exists on a given database table.
+The field under validation must exist on a given database table.
 
 **Basic Usage Of Exists Rule**
 
@@ -312,6 +329,11 @@ The field under validation must be present if the _field_ field is equal to _val
 
 The field under validation must be present _only if_ the other specified fields are present.
 
+<a name="rule-required-without"></a>
+#### required_without:_foo_,_bar_,...
+
+The field under validation must be present _only when_ the other specified fields are not present.
+
 <a name="rule-same"></a>
 #### same:_field_
 
@@ -339,10 +361,44 @@ The field under validation must be unique on a given database table. If the `col
 
 	'email' => 'unique:users,email_address,10'
 
+**Adding Additional Where Clauses**
+
+You may also specify more conditions that will be added as "where" clauses to the query:
+
+	'email' => 'unique:users,email_address,NULL,id,account_id,1'
+
+In the rule above, only rows with an `account_id` of `1` would be included in the unique check.
+
 <a name="rule-url"></a>
 #### url
 
 The field under validation must be formatted as an URL.
+
+<a name="conditionally-adding-rules"></a>
+## Conditionally Adding Rules
+
+Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doens't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+
+	$v = Validator::make($data, array(
+		'email' => 'required|email',
+		'games' => 'required|numeric',
+	));
+
+Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+
+	$v->sometimes('reason', 'required|max:500', function($input)
+	{
+		return $input->games >= 100;
+	});
+
+The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+
+	$v->sometimes(array('reason', 'cost'), 'required', function($input)
+	{
+		return $input->games >= 100;
+	});
+
+> **Note:** The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used as an object to access your input and files.
 
 <a name="custom-error-messages"></a>
 ## Custom Error Messages
@@ -378,6 +434,7 @@ Sometimes you may wish to specify a custom error messages only for a specific fi
 
 In some cases, you may wish to specify your custom messages in a language file instead of passing them directly to the `Validator`. To do so, add your messages to `custom` array in the `app/lang/xx/validation.php` language file.
 
+<a name="localization"></a>
 **Specifying Custom Messages In Language Files**
 
 	'custom' => array(
@@ -397,8 +454,6 @@ Laravel provides a variety of helpful validation rules; however, you may wish to
 	{
 		return $value == 'foo';
 	});
-
-> **Note:** The name of the rule passed to the `extend` method must be "snake cased".
 
 The custom validator Closure receives three arguments: the name of the `$attribute` being validated, the `$value` of the attribute, and an array of `$parameters` passed to the rule.
 

@@ -92,6 +92,16 @@ Of course, you may also use the query builder aggregate functions.
 
 	$count = User::where('votes', '>', 100)->count();
 
+If you are unable to generate the query you need via the fluent interface, feel free to use `whereRaw`:
+
+	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
+
+**Specifying The Query Connection**
+
+You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
+
+	$user = User::on('connection-name')->find(1);
+
 <a name="mass-assignment"></a>
 ## Mass Assignment
 
@@ -144,6 +154,10 @@ To create a new record in the database from a model, simply create a new model i
 
 You may also use the `create` method to save a new model in a single line. The inserted model instance will be returned to you from the method. However, before doing so, you will need to specify either a `fillable` or `guarded` attribute on the model, as all Eloquent models protect against mass-assignment.
 
+After saving or creating a new model that uses auto-incrementing IDs, you may retrieve the ID by accessing the object's `id` attribute:
+
+	$insertedId = $user->id;
+
 **Setting The Guarded Attributes On The Model**
 
 	class User extends Eloquent {
@@ -187,6 +201,8 @@ To delete a model, simply call the `delete` method on the instance:
 **Deleting An Existing Model By Key**
 
 	User::destroy(1);
+
+	User::destroy(array(1, 2, 3));
 
 	User::destroy(1, 2, 3);
 
@@ -255,7 +271,7 @@ To determine if a given model instance has been soft deleted, you may use the `t
 <a name="timestamps"></a>
 ## Timestamps
 
-By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `datetime` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
+By default, Eloquent will maintain the `created_at` and `updated_at` columns on your database table automatically. Simply add these `timestamp` columns to your table and Eloquent will take care of the rest. If you do not wish for Eloquent to maintain these columns, add the following property to your model:
 
 **Disabling Auto Timestamps**
 
@@ -267,15 +283,15 @@ By default, Eloquent will maintain the `created_at` and `updated_at` columns on 
 
 	}
 
-If you wish to customize the format of your timestamps, you may override the `freshTimestamp` method in your model:
+If you wish to customize the format of your timestamps, you may override the `getDateFormat` method in your model:
 
 **Providing A Custom Timestamp Format**
 
 	class User extends Eloquent {
 
-		public function freshTimestamp()
+		protected function getDateFormat()
 		{
-			return time();
+			return 'U';
 		}
 
 	}
@@ -294,11 +310,33 @@ Scopes allow you to easily re-use query logic in your models. To define a scope,
 			return $query->where('votes', '>', 100);
 		}
 
+		public function scopeWomen($query)
+		{
+			return $query->whereGender('W');
+		}
+
 	}
 
 **Utilizing A Query Scope**
 
-	$users = User::popular()->orderBy('created_at')->get();
+	$users = User::popular()->women()->orderBy('created_at')->get();
+
+**Dynamic Scopes**
+
+Sometimes You may wish to define a scope that accepts parameters. Just add your parameters to your scope function:
+
+	class User extends Eloquent {
+
+		public function scopeOfType($query, $type)
+		{
+			return $query->whereType($type);
+		}
+
+	}
+
+Then pass the parameter into the scope call:
+
+	$users = User::ofType('member')->get();
 
 <a name="relationships"></a>
 ## Relationships
@@ -349,6 +387,17 @@ To define the inverse of the relationship on the `Phone` model, we use the `belo
 		public function user()
 		{
 			return $this->belongsTo('User');
+		}
+
+	}
+
+In the example above, Eloquent will look for a `user_id` column on the `phones` table. If you would like to define a different foreign key column, you may pass it as the second argument to the `belongsTo` method:
+
+	class Phone extends Eloquent {
+
+		public function user()
+		{
+			return $this->belongsTo('User', 'custom_key');
 		}
 
 	}
@@ -532,7 +581,7 @@ Eloquent allows you to access your relations via dynamic properties. Eloquent wi
 	}
 
 	$phone = Phone::find(1);
-	
+
 Instead of echoing the user's email like this:
 
 	echo $phone->user()->first()->email;
@@ -540,6 +589,8 @@ Instead of echoing the user's email like this:
 It may be shortened to simply:
 
 	echo $phone->user->email;
+
+> **Note:** Relationships that return many results will return an instance of the `Illuminate\Database\Eloquent\Collection` class.
 
 <a name="eager-loading"></a>
 ## Eager Loading
@@ -732,7 +783,7 @@ Note that this operation does not delete records from the `roles` table, but onl
 <a name="collections"></a>
 ## Collections
 
-All multi-result sets returned by Eloquent either via the `get` method or a relationship return an Eloquent `Collection` object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
+All multi-result sets returned by Eloquent, either via the `get` method or a `relationship`, will return a collection object. This object implements the `IteratorAggregate` PHP interface so it can be iterated over like an array. However, this object also has a variety of other helpful methods for working with result sets.
 
 For example, we may determine if a result set contains a given primary key using the `contains` method:
 
@@ -757,25 +808,34 @@ If a collection is cast to a string, it will be returned as JSON:
 
 Eloquent collections also contain a few helpful methods for looping and filtering the items they contain:
 
-**Iterating & Filtering Collections**
+**Iterating Collections**
 
 	$roles = $user->roles->each(function($role)
 	{
-
+		//
 	});
 
-	$roles = $user->roles->filter(function($role)
+**Filtering Collections**
+
+When filtering collections, the callback provided will be used as callback for [array_filter](http://php.net/manual/en/function.array-filter.php).
+
+	$users = $user->filter(function($user)
 	{
-
+		if($user->isAdmin())
+		{
+			return $user;
+		}
 	});
+
+> **Note:** When filtering a collection and converting it to JSON, try calling the `values` function first to reset the array's keys.
 
 **Applying A Callback To Each Collection Object**
 
 	$roles = User::find(1)->roles;
-	
+
 	$roles->each(function($role)
 	{
-		//	
+		//
 	});
 
 **Sorting A Collection By A Value**
@@ -853,7 +913,11 @@ To totally disable date mutations, simply return an empty array from the `getDat
 <a name="model-events"></a>
 ## Model Events
 
-Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`. If `false` is returned from the `creating`, `updating`, or `saving` events, the action will be cancelled:
+Eloquent models fire several events, allowing you to hook into various points in the model's lifecycle using the following methods: `creating`, `created`, `updating`, `updated`, `saving`, `saved`, `deleting`, `deleted`, `restoring`, `restored`.
+
+Whenever a new item is saved for the first time, the `creating` and `created` events will fire. If an item is not new and the `save` method is called, the `updating` / `updated` events will fire. In both cases, the `saving` / `saved` events will fire.
+
+If `false` is returned from the `creating`, `updating`, `saving`, or `deleting` events, the action will be cancelled:
 
 **Cancelling Save Operations Via Events**
 
@@ -942,6 +1006,22 @@ Sometimes you may wish to limit the attributes that are included in your model's
 
 	}
 
+> **Note:** When hiding relationships, use the relationship's **method** name, not the dynamic accessor name.
+
 Alternatively, you may use the `visible` property to define a white-list:
 
 	protected $visible = array('first_name', 'last_name');
+
+<a name="array-appends"></a>
+Occasionally, you may need to add array attributes that do not have a corresponding column in your database. To do so, simply define an accessor for the value:
+
+	public function getIsAdminAttribute()
+	{
+		return $this->attributes['admin'] == 'yes';
+	}
+
+Once you have created the accessor, just add the value to the `appends` property on the model:
+
+	protected $appends = array('is_admin');
+
+Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON forms.

@@ -65,6 +65,10 @@ Blade is a simple, yet powerful templating engine provided with Laravel. Unlike 
 
 Note that views which `extend` a Blade layout simply override sections from the layout. Content of the layout can be included in a child view using the `@parent` directive in a section, allowing you to append to the contents of a layout section such as a sidebar or footer.
 
+Sometimes, such as when you are not sure if a section has been defined, you may wish to pass a default value to the `@yield` directive. You may pass the default value as the second argument:
+
+	@yield('section', 'Default Content');
+
 <a name="other-blade-control-structures"></a>
 ## Other Blade Control Structures
 
@@ -74,9 +78,17 @@ Note that views which `extend` a Blade layout simply override sections from the 
 
 	The current UNIX timestamp is {{ time() }}.
 
-To escape the output, you may use the triple curly brace syntax:
+If you need to display a string that is wrapped in curly braces, you may escape the Blade behavior by prefixing your text with an `@` symbol:
+
+**Displaying Raw Text With Curly Braces**
+
+	@{{ This will not be processed by Blade }}
+
+Of course, all user supplied data should be escaped or purified. To escape the output, you may use the triple curly brace syntax:
 
 	Hello, {{{ $name }}}.
+
+> **Note:** Be very careful when echoing content that is supplied by users of your application. Always use the triple curly brace syntax to escape any HTML entities in the content.
 
 **If Statements**
 
@@ -109,6 +121,20 @@ To escape the output, you may use the triple curly brace syntax:
 **Including Sub-Views**
 
 	@include('view.name')
+	
+You may also pass an array of data to the included view:
+	
+	@include('view.name', array('some'=>'data'))
+	
+**Overwriting Sections**
+
+By default, sections are appended to any previous content that exists in the section. To overwrite a section entirely, you may use the `overwrite` statement:
+	
+	@extends('list.item.container')
+
+	@section('list.item.content')
+		<p>This is an item of type {{ $item->type }}</p>
+	@overwrite
 
 **Displaying Language Lines**
 

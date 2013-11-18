@@ -38,6 +38,8 @@ Once the `workbench` command has been executed, your package will be available w
 
 Once the provider has been registered, you are ready to start developing your package! However, before diving in, you may wish to review the sections below to get more familiar with the package structure and development workflow.
 
+> **Note:** If your service provider cannot be found, run the `php artisan dump-autoload` command from your application's root directory
+
 <a name="package-structure"></a>
 ## Package Structure
 
@@ -71,6 +73,16 @@ When creating a package using the `workbench`, the `boot` command will already c
 
 This method allows Laravel to know how to properly load the views, configuration, and other resources for your application. In general, there should be no need for you to change this line of code, as it will setup the package using the workbench conventions.
 
+By default, after registering a package, its resources will be available using the "package" half of `vendor/package`. However, you may pass a second argument into the `package` method to override this behavior. For example:
+
+	// Passing custom namespace to package method
+	$this->package('vendor/package', 'custom-namespace');
+
+	// Package resources now accessed via custom-namespace
+	$view = View::make('custom-namespace::foo');
+
+There is not a "default location" for service provider classes. You may put them anywhere you like, perhaps organizing them in a `Providers` namespace within your `app` directory. The file may be placed anywhere, as long as Composer's [auto-loading facilities](http://getcomposer.org/doc/01-basic-usage.md#autoloading) know how to load the class.
+
 <a name="package-conventions"></a>
 ## Package Conventions
 
@@ -94,6 +106,12 @@ When developing a package, it is useful to be able to develop within the context
 After the `workbench` command has created your package. You may `git init` from the `workbench/[vendor]/[package]` directory and `git push` your package straight from the workbench! This will allow you to conveniently develop the package in an application context without being bogged down by constant `composer update` commands.
 
 Since your packages are in the `workbench` directory, you may be wondering how Composer knows to autoload your package's files. When the `workbench` directory exists, Laravel will intelligently scan it for packages, loading their Composer autoload files when the application starts!
+
+If you need to regenerate your package's autoload files, you may use the `php artisan dump-autoload` command. This command will regenerate the autoload files for your root project, as well as any workbenches you have created.
+
+**Running The Artisan Autoload Command**
+
+	php artisan dump-autoload
 
 <a name="package-routing"></a>
 ## Package Routing
@@ -125,6 +143,18 @@ However, if your package contains a single configuration file, you may simply na
 **Accessing Single File Package Configuration**
 
 	Config::get('package::option');
+
+Sometimes, you may wish to register package resources such as views outside of the typical `$this->package` method. Typically, this would only be done if the resources were not in a conventional location. To register the resources manually, you may use the `addNamespace` method of the `View`, `Lang`, and `Config` classes:
+
+**Registering A Resource Namespace Manually**
+
+	View::addNamespace('package', __DIR__.'/path/to/views');
+
+Once the namespace has been registered, you may use the namespace name and the "double colon" syntax to access the resources:
+
+	return View::make('package::view.name');
+
+The method signature for `addNamespace` is identical on the `View`, `Lang`, and `Config` classes.
 
 ### Cascading Configuration Files
 

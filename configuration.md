@@ -25,6 +25,8 @@ Notice that "dot" style syntax may be used to access values in the various files
 
 	Config::set('database.default', 'sqlite');
 
+Configuration values that are set at run-time are only set for the current request, and will not be carried over to subsequent requests.
+
 <a name="environment-configuration"></a>
 ## Environment Configuration
 
@@ -53,6 +55,8 @@ Next, we need to instruct the framework how to determine which environment it is
         'local' => array('your-machine-name'),
 
     ));
+
+In this example, 'local' is the name of the environment and 'your-machine-name' is the hostname of your server. On Linux and Mac, you may determine your hostname using the `hostname` terminal command.
 
 You may also pass a `Closure` to the `detectEnvironment` method, allowing you to implement your own environment detection:
 

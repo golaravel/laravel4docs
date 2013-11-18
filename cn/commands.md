@@ -23,7 +23,7 @@
 
 默认情况下，生成的类文件被存放在 `app/commands` 目录下，同时你也可以指定自定义目录和命名空间：
 
-	php artisan command:make FooCommand --path="app/classes" --namespace="Classes"
+	php artisan command:make FooCommand --path=app/classes --namespace=Classes
 
 ### 实现命令
 

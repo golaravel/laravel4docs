@@ -179,6 +179,11 @@ You may also use HTTP Basic Authentication without setting a user identifier coo
 		return Auth::onceBasic();
 	});
 
+If you are using PHP FastCGI, HTTP Basic authentication will not work correctly by default. The following lines should be added to your `.htaccess` file:
+
+	RewriteCond %{HTTP:Authorization} ^(.+)$
+	RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
 <a name="password-reminders-and-reset"></a>
 ## Password Reminders & Reset
 
@@ -262,7 +267,11 @@ Again, notice we are using the `Session` to display any errors that may be detec
 
 	Route::post('password/reset/{token}', function()
 	{
-		$credentials = array('email' => Input::get('email'));
+		$credentials = array(
+		    'email' => Input::get('email'),
+		    'password' => Input::get('password'),
+		    'password_confirmation' => Input::get('password_confirmation')
+		);
 
 		return Password::reset($credentials, function($user, $password)
 		{
@@ -275,6 +284,8 @@ Again, notice we are using the `Session` to display any errors that may be detec
 	});
 
 If the password reset is successful, the `User` instance and the password will be passed to your Closure, allowing you to actually perform the save operation. Then, you may return a `Redirect` or any other type of response from the Closure which will be returned by the `reset` method. Note that the `reset` method automatically checks for a valid `token` in the request, valid credentials, and matching passwords.
+
+By default, password reset tokens expire after one hour. You may change this via the `reminder.expire` option of your `app/config/auth.php` file.
 
 Also, similarly to the `remind` method, if an error occurs while resetting the password, the `reset` method will return a `Redirect` to the current URI with an `error` and `reason`.
 
@@ -297,6 +308,6 @@ You may also set the cipher and mode used by the encrypter:
 
 **Setting The Cipher & Mode**
 
-	Crypt::setMode('crt');
+	Crypt::setMode('ctr');
 
 	Crypt::setCipher($cipher);

@@ -36,7 +36,7 @@ To specify which connection the schema operation should take place on, use the `
 
 	Schema::connection('foo')->create('users', function($table)
 	{
-		$table->increments('id'):
+		$table->increments('id');
 	});
 
 To drop a table, you may use the `Schema::drop` method:
@@ -60,12 +60,14 @@ The table builder contains a variety of column types that you may use when build
 Command  | Description
 ------------- | -------------
 `$table->increments('id');`  |  Incrementing ID to the table (primary key).
+`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
 `$table->string('email');`  |  VARCHAR equivalent column
 `$table->string('name', 100);`  |  VARCHAR equivalent with a length
 `$table->integer('votes');`  |  INTEGER equivalent to the table
 `$table->bigInteger('votes');`  |  BIGINT equivalent to the table
 `$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
 `$table->float('amount');`  |  FLOAT equivalent to the table
+`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision
 `$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
 `$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
 `$table->date('created_at');`  |  DATE equivalent to the table

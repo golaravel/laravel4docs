@@ -70,7 +70,7 @@
 		return $name;
 	});
 
-**带有正则表达式约束条件的路由**
+**用正则表达式限定的路由参数**
 
 	Route::get('user/{name}', function($name)
 	{
@@ -83,6 +83,23 @@
 		//
 	})
 	->where('id', '[0-9]+');
+
+当然，必要的时候你还可以传递一个包含参数限定的数组作为参数：
+
+	Route::get('user/{id}/{name}', function($id, $name)
+	{
+		//
+	})
+	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'))
+
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method:
+
+	Route::pattern('id', '[0-9]+');
+
+	Route::get('user/{id}', function($id)
+	{
+		// Only called if {id} is numeric.
+	});
 
 <a name="route-filters"></a>
 ## 路由过滤器
@@ -108,6 +125,10 @@
 	{
 		return 'You are over 200 years old!';
 	}));
+
+**Attaching A Filter To A Controller Action**
+
+	Route::get('user', array('before' => 'old', 'uses' => 'UserController@showProfile'));
 
 **为路由绑定多个过滤器**
 

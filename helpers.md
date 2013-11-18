@@ -45,9 +45,12 @@ The `array_except` method removes the given key / value pairs from the array.
 
 The `array_fetch` method returns a flattened array containing the selected nested element.
 
-	$array = array(array('name' => 'Taylor'), array('name' => 'Dayle'));
+	$array = array(
+		array('developer' => array('name' => 'Taylor')),
+		array('developer' => array('name' => 'Dayle')),
+	);
 
-	var_dump(array_fetch($array, 'name'));
+	$array = array_fetch($array, 'developer.name');
 
 	// array('Taylor', 'Dayle');
 
@@ -157,7 +160,7 @@ Return the last element in the array. Useful for method chaining.
 
 ### app_path
 
-Get the fully qualified path to the `application` directory.
+Get the fully qualified path to the `app` directory.
 
 ### base_path
 
@@ -169,7 +172,7 @@ Get the fully qualified path to the `public` directory.
 
 ### storage_path
 
-Get the fully qualified path to the `application/storage` directory.
+Get the fully qualified path to the `app/storage` directory.
 
 <a name="strings"></a>
 ## Strings
@@ -192,7 +195,7 @@ Get the class name of the given class, without any namespace names.
 
 ### e
 
-Run `htmlentites` over the given string, with UTF-8 support.
+Run `htmlentities` over the given string, with UTF-8 support.
 
 	$entities = e('<html>foo</html>');
 
@@ -282,6 +285,12 @@ Tranlate a given language line with inflection. Alias of `Lang::choice`.
 Generate a URL for a given controller action.
 
 	$url = action('HomeController@getIndex', $params);
+
+### route
+
+Generate a URL for a given named route.
+
+	$url = route('routeName', $params);
 
 ### asset
 

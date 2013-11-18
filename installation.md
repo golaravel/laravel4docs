@@ -18,7 +18,7 @@ Laravel utilizes [Composer](http://getcomposer.org) to manage its dependencies. 
 
 You may install Laravel by issuing the Composer `create-project` command in your terminal:
 
-	composer create-project laravel/laravel
+	composer create-project laravel/laravel --prefer-dist
 
 ### Via Download
 
@@ -34,12 +34,12 @@ The Laravel framework has a few system requirements:
 - PHP >= 5.3.7
 - MCrypt PHP Extension
 
+As of PHP 5.5, some OS distributions may require you to manually install the PHP JSON extension. When using Ubuntu, this can be done via `apt-get install php5-json`.
+
 <a name="configuration"></a>
 ## Configuration
 
 Laravel needs almost no configuration out of the box. You are free to get started developing! However, you may wish to review the `app/config/app.php` file and its documentation. It contains several options such as `timezone` and `locale` that you may wish to change according to your application.
-
-> **Note:** One configuration option you should be sure to set is the `key` option within `app/config/app.php`. This value should be set to a 32 character, random string. This key is used when encrypting values, and encrypted values will not be safe until it is properly set. You can set this value quickly by using the following artisan command `php artisan key:generate`.
 
 <a name="permissions"></a>
 ### Permissions
@@ -49,8 +49,6 @@ Laravel requires one set of permissions to be configured - folders within app/st
 ### Paths
 
 Several of the framework directory paths are configurable. To change the location of these directories, check out the `bootstrap/paths.php` file.
-
-> **Note:** Laravel is designed to protect your application code, and local storage by placing only files that are necessarily public in the public folder.  It is recommended that you either set the public folder as your site's documentRoot (also known as a web root) or to place the contents of public into your site's root directory and place all of Laravel's other files outside the web root. 
 
 <a name="pretty-urls"></a>
 ## Pretty URLs
@@ -62,5 +60,6 @@ If the `.htaccess` file that ships with Laravel does not work with your Apache i
 	Options +FollowSymLinks
 	RewriteEngine On
 
+	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^ index.php [L]

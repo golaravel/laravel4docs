@@ -10,6 +10,7 @@
 - [Drop-Down Lists](#drop-down-lists)
 - [Buttons](#buttons)
 - [Custom Macros](#custom-macros)
+- [Generating URLs](#generating-urls)
 
 <a name="opening-a-form"></a>
 ## Opening A Form
@@ -24,13 +25,19 @@ By default, a `POST` method will be assumed; however, you are free to specify an
 
 	echo Form::open(array('url' => 'foo/bar', 'method' => 'put'))
 
-> **Note:** Since HTML forms only support `POST`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
+> **Note:** Since HTML forms only support `POST` and `GET`, `PUT` and `DELETE` methods will be spoofed by automatically adding a `_method` hidden field to your form.
 
 You may also open forms that point to named routes or controller actions:
 
 	echo Form::open(array('route' => 'route.name'))
 
 	echo Form::open(array('action' => 'Controller@method'))
+
+You may pass in route parameters as well:
+
+	echo Form::open(array('route' => array('route.name', $user->id)))
+
+	echo Form::open(array('action' => array('Controller@method', $user->id)))
 
 If your form is going to accept file uploads, add a `files` option to your array:
 
@@ -101,19 +108,24 @@ This allows you to quickly build forms that not only bind to model values, but e
 
 	echo Form::password('password');
 
+**Generating Other Inputs**
+
+	echo Form::email($name, $value = null, $attributes = array());
+	echo Form::file($name, $attributes = array());
+
 <a name="checkboxes-and-radio-buttons"></a>
 ## Checkboxes and Radio Buttons
 
 **Generating A Checkbox Or Radio Input**
 
 	echo Form::checkbox('name', 'value');
-	
+
 	echo Form::radio('name', 'value');
 
 **Generating A Checkbox Or Radio Input That Is Checked**
 
 	echo Form::checkbox('name', 'value', true);
-	
+
 	echo Form::radio('name', 'value', true);
 
 <a name="file-input"></a>
@@ -141,6 +153,14 @@ This allows you to quickly build forms that not only bind to model values, but e
 		'Dogs' => array('spaniel' => 'Spaniel'),
 	));
 
+**Generating A Drop-Down List With A Range**
+
+    echo Form::selectRange('number', 10, 20);
+
+**Generating A List With Month Names**
+
+    echo Form::selectMonth('month');
+
 <a name="buttons"></a>
 ## Buttons
 
@@ -167,3 +187,9 @@ Now you can call your macro using its name:
 **Calling A Custom Form Macro**
 
 	echo Form::myField();
+
+
+<a name="generating-urls"></a>
+##Generating URLs
+
+For more information on generating URL's, check out the documentation on [helpers](/docs/helpers#urls).

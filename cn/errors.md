@@ -44,6 +44,8 @@
 		//
 	});
 
+如果同时有多个异常处理器，应该先定义最通用的，然后定义最具体的异常处理器。例如，处理所有 `Exception` 类型的异常处理器应当在处理 `Illuminate\Encryption\DecryptException` 类型的异常处理器之前。
+
 <a name="http-exceptions"></a>
 ## HTTP 异常
 
@@ -81,6 +83,10 @@ Laravel日志工具为强大的[Monolog](http://github.com/seldaek/monolog)提�
 	Log::error('Something is really going wrong.');
 
 日志工具提供了7个日志级别，参见[RFC 5424](http://tools.ietf.org/html/rfc5424)：**debug**、**info**、**notice**、**warning**、**error**、**critical** 和 **alert**。
+
+还可以像Log方法传递一个包含额外数据的数组：
+
+	Log::info('Log message', array('context' => 'Other helpful information'));
 
 Monolog提供了多种处理日志的功能。如果需要，你可以通过如下方法获取Laravel内部所使用的Monolog实例：
 

@@ -84,6 +84,23 @@ Often, you will need to generate URLs to your routes, you may do so using the `U
 	})
 	->where('id', '[0-9]+');
 
+Of course, you may pass an array of constraints when necessary:
+
+	Route::get('user/{id}/{name}', function($id, $name)
+	{
+		//
+	})
+	->where(array('id' => '[0-9]+', 'name' => '[a-z]+'))
+
+If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method:
+
+	Route::pattern('id', '[0-9]+');
+
+	Route::get('user/{id}', function($id)
+	{
+		// Only called if {id} is numeric.
+	});
+
 <a name="route-filters"></a>
 ## Route Filters
 
@@ -107,6 +124,10 @@ If a response is returned from a filter, that response will be considered the re
 	{
 		return 'You are over 200 years old!';
 	}));
+
+**Attaching A Filter To A Controller Action**
+
+	Route::get('user', array('before' => 'old', 'uses' => 'UserController@showProfile'));
 
 **Attaching Multiple Filters To A Route**
 
@@ -228,6 +249,7 @@ Laravel routes are also able to handle wildcard sub-domains, and pass you wildca
 		});
 
 	});
+
 <a name="route-prefixing"></a>
 ## Route Prefixing
 

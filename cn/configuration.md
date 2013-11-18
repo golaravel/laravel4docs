@@ -25,6 +25,8 @@
 
 	Config::set('database.default', 'sqlite');
 
+在程序运行时设置的配置值只在本次请求中有效，不会对以后的请求造成影响。
+
 <a name="environment-configuration"></a>
 ## 环境配置
 
@@ -53,6 +55,8 @@
         'local' => array('your-machine-name'),
 
     ));
+
+ 在此案例中，'local' 是运行环境的名称，'your-machine-name' 是服务器的主机名。在Linux和Mac上，可以通过 `hostname` 命令来确定所用机器的主机名。
 
 你还可以在调用`detectEnvironment`时传递一个`闭包（Closure）` ， 这样你就可以自己检查环境：
 

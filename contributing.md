@@ -7,7 +7,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-Laravel is free, open-source software, meaning anyone can contribute to its development and progress. Laravel source code is currently hosted on [Github](http://github.com), which provides an easy method for forking the project and merging your contributions.
+Laravel is free, open-source software, meaning anyone can contribute to its development and progress. Laravel source code is currently hosted on [Github](https://github.com/laravel), which provides an easy method for forking the project and merging your contributions.
 
 <a name="pull-requests"></a>
 ## Pull Requests
@@ -15,6 +15,8 @@ Laravel is free, open-source software, meaning anyone can contribute to its deve
 The pull request process differs for new features and bugs. Before sending a pull request for a new feature, you should first create an issue with `[Proposal]` in the title. The proposal should describe the new feature, as well as implementation ideas. The proposal will then be reviewed and either approved or denied. Once a proposal is approved, a pull request may be created implementing the new feature. Pull requests which do not follow this guideline will be closed immediately.
 
 Pull requests for bugs may be sent without creating any proposal issue. If you believe that you know of a solution for a bug that has been filed on Github, please leave a comment detailing your proposed fix.
+
+Additions and corrections to the documentation may also be contributed via the [documentation repository](https://github.com/laravel/docs) on Github.
 
 ### Feature Requests
 

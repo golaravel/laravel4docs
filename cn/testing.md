@@ -106,7 +106,7 @@ For more information on how to use the crawler, refer to its [official documenta
 
 	public function testGetIndex()
 	{
-		Event::shouldReceive('fire')->once()->with(array('name' => 'Dayle'));
+		Event::shouldReceive('fire')->once()->with('foo', array('name' => 'Dayle'));
 
 		$this->call('GET', '/');
 	}

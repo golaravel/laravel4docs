@@ -83,3 +83,7 @@ Laravel 目前支持四种数据库系统,分别是: MySQL， Postgres， SQLite
 Laravel默认会为当前请求执行的的所有查询生成日志并保存在内存中。 因此， 在某些特殊的情况下， 比如一次性向数据库中插入大量数据， 就可能导致内存不足。 在这种情况下，你可以通过 `disableQueryLog` 方法来关闭查询日志：
 
 	DB::connection()->disableQueryLog();
+
+调用 `getQueryLog` 方法可以同时获取多个查询执行后的日志：
+
+       $queries = DB::getQueryLog();

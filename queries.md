@@ -116,6 +116,12 @@ The query builder may also be used to write join statements. Take a look at the 
 	            ->join('orders', 'users.id', '=', 'orders.user_id')
 	            ->select('users.id', 'contacts.phone', 'orders.price');
 
+**Left Join Statement**
+
+	DB::table('users')
+		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+		    ->get();
+
 You may also specify more advanced join clauses:
 
 	DB::table('users')
@@ -197,7 +203,15 @@ Sometimes you may need to use a raw expression in a query. These expressions wil
 
 	DB::table('users')->increment('votes');
 
+	DB::table('users')->increment('votes', 5);
+
 	DB::table('users')->decrement('votes');
+
+	DB::table('users')->decrement('votes', 5);
+
+You may also specify additional columns to update:
+
+	DB::table('users')->increment('votes', 1, array('name' => 'John'));
 
 <a name="inserts"></a>
 ## Inserts

@@ -15,6 +15,14 @@ Laravel框架使用[Composer](http://getcomposer.org)（PHP包管理工具）来
 <a name="install-laravel"></a>
 ## 安装Laravel
 
+### 通过 Composer create-project 命令安装Laravel
+
+通过在命令行执行 Composer `create-project` 命令来安装Laravel：
+
+	composer create-project laravel/laravel --prefer-dist
+
+### 通过下载Laravel包安装
+
 Composer安装完成后，下载[最新版Laravel框架](https://github.com/laravel/laravel/archive/master.zip)，把它解压缩到你服务器上的一个目录中。然后在Laravel应用的根目录下运行命令行命令 `php composer.phar install` （或者 `composer install` ）来安装所有的框架依赖包。在此过程中，为了成功完成安装，你需要在服务器上安装好Git。
 
 当Laravel框架安装好后，你可以使用命令行命令 `php composer.phar update` 来更新框架。
@@ -27,13 +35,12 @@ Laravel框架有一些系统要求：
 - PHP最低版本： 5.3.7
 - MCrypt PHP扩展
 
+从PHP 5.5版本开始，针对某些操作系统的安装包需要你自己手工安装PHP的JSON扩展模块。如果你使用的是Ubuntu，可以通过,  `apt-get install php5-json` 命令直接安装。（译者注：还是Ubuntu傻瓜化啊！！！）
+
 <a name="configuration"></a>
 ## 配置
 
-
 Laravel框架几乎无需配置就可立即使用。你可以自由地快速开始开发。然而，你也许希望先查看下 `app/config/app.php` 配置文件和相关的文档说明。它包含了一些你也许要修改的配置选项，如 `时区` 和 `地区` 等。
-
-> **注意：** 在 `app/config/app.php` 文件中有一项你需要确认设置的选项就是 `key` 选项。它的值应该是一个32位长度的随机字符串。这个 `key` 选项是用来加密的，为了确保安全你需要正确设置它的值。你可以使用如下 artisan 命令快速设置这个值，`php artisan key:generate`。
 
 <a name="permissions"></a>
 ### 权限设置
@@ -43,8 +50,6 @@ Laravel框架有一处需要设置权限 —— app/storage 目录下的文件�
 ### 路径设置
 
 一些框架目录路径是可以设置的。如果需要改变这些目录的位置，可以查看 `bootstrap/paths.php` 文件中的设置。
-
-> **注意：** 作为Laravel框架保护项目代码的设计，本地存储中只有 public 目录需要公开访问。推荐将 public 目录设置为文档根目录（documentRoot，又称web root网站根目录）或者把 public 目录放置在网站可访问目录下，把所有其他的目录放到网站可访问目录之外。
 
 <a name="pretty-urls"></a>
 ## 优雅链接

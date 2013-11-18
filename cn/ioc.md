@@ -165,7 +165,12 @@ Laravel 提供了几个方法使用 IoC 容器增强应用程序可扩展性和�
 
 **注册获取事件监听者**
 
-	App::resolving(function($object)
+	App::resolvingAny(function($object)
+	{
+		//
+	});
+
+	App::resolving('foo', function($foo)
 	{
 		//
 	});

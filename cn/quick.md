@@ -10,7 +10,9 @@
 <a name="installation"></a>
 ## 安装
 
-要安装 Laravel 框架，你可以在终端使用如下命令安装：
+Laravel框架使用 [Composer](http://getcomposer.org) 执行安装和依赖管理。如果还没有安装的话，现在就开始 [安装 Composer](http://getcomposer.org/doc/00-intro.md) 吧。
+
+安装Composer之后，你就可以通过命令行使用如下命令安装Laravel了：
 
 	composer create-project laravel/laravel your-project-name
 

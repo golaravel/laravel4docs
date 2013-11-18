@@ -129,6 +129,10 @@ Laravel包含了一个用于运行已推送到队列的任务的Artisan服务。
 
 	php artisan queue:listen --timeout=60
 
+另外，你还可以指定新任务轮询之前所需要等待的秒数：
+
+	php artisan queue:listen --sleep=5
+
 如果只想处理队列的第一个任务，你可以使用 `queue:work` 命令：
 
 **处理队列的第一个任务**

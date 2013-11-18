@@ -10,6 +10,7 @@
 - [下拉菜单](#drop-down-lists)
 - [按钮](#buttons)
 - [自定义宏](#custom-macros)
+- [生成URL](#generating-urls)
 
 <a name="opening-a-form"></a>
 ## 创建表单
@@ -153,6 +154,14 @@ Laravel框架提供了一种简单的方法帮助你的应用抵御CSRF（跨站
 	));
 	//译者注，输出结果为： <select name="animal"><optgroup label="Cats"><option value="leopard">Leopard</option></optgroup><optgroup label="Dogs"><option value="spaniel">Spaniel</option></optgroup></select>
 
+**生成一个包含可取值范围的下拉菜单**
+
+    echo Form::selectRange('number', 10, 20);
+
+**生成月份名称列表**
+
+    echo Form::selectMonth('month');
+
 <a name="buttons"></a>
 ## 按钮
 
@@ -180,3 +189,9 @@ Laravel框架提供了一种简单的方法帮助你的应用抵御CSRF（跨站
 **调用一个自定义表单宏**
 
 	echo Form::myField();
+
+
+<a name="generating-urls"></a>
+##生成URL
+
+请参考 [helpers](/docs/helpers#urls) 文档了解更多关于生成URL的信息。

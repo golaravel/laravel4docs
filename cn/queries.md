@@ -116,6 +116,12 @@ lists方法返回一个包含所有roles表的title字段的值的数组. 可以
 	            ->join('orders', 'users.id', '=', 'orders.user_id')
 	            ->select('users.id', 'contacts.phone', 'orders.price');
 
+**左连接（Left Join）语句**
+
+	DB::table('users')
+		    ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+		    ->get();
+
 指定更多的连接条件:
 
 	DB::table('users')

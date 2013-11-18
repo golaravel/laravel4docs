@@ -26,7 +26,7 @@ Laravel中的request的生命周期相当简单。当一个request进入到你�
 
 **注册应用程序事件**
 
-	App::before(function()
+	App::before(function($request)
 	{
 		//
 	});

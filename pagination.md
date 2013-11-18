@@ -24,7 +24,9 @@ You may also paginate [Eloquent](/docs/eloquent) models:
 
 **Paginating An Eloquent Model**
 
-	$users = User::where('votes', '>', 100)->paginate(15);
+	$allUsers = User::paginate(15);
+
+	$someUsers = User::where('votes', '>', 100)->paginate(15);
 
 The argument passed to the `paginate` method is the number of items you wish to display per page. Once you have retrieved the results, you may display them on your view, and create the pagination links using the `links` method:
 
@@ -46,12 +48,23 @@ You may also access additional pagination information via the following methods:
 - `getTotal`
 - `getFrom`
 - `getTo`
+- `count`
 
 Sometimes you may wish to create a pagination instance manually, passing it an array of items. You may do so using the `Paginator::make` method:
 
 **Creating A Paginator Manually**
 
 	$paginator = Paginator::make($items, $totalItems, $perPage);
+
+**Customizing The Paginator URI**
+
+You may also customize the URI used by the paginator via the `setBaseUrl` method:
+
+	$users = User::paginate();
+
+	$users->setBaseUrl('custom/url');
+
+The example above will create URLs like the following: http://example.com/custom/url?page=2
 
 <a name="appending-to-pagination-links"></a>
 ## Appending To Pagination Links

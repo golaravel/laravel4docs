@@ -13,6 +13,7 @@
     - [Errors & Logging](/docs/errors)
 - Learning More
     - [Cache](/docs/cache)
+    - [Core Extension](/docs/extending)
     - [Events](/docs/events)
     - [Facades](/docs/facades)
     - [Forms & HTML](/docs/html)

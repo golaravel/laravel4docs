@@ -24,7 +24,9 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 
 **从一个 Eloquent 模型中分页**
 
-	$users = User::where('votes', '>', 100)->paginate(15);
+	$allUsers = User::paginate(15);
+
+	$someUsers = User::where('votes', '>', 100)->paginate(15);
 
 你只需要吧每页查询的记录数传给`paginate`方法即可. 在获得包含分页的查询结果集之后, 就可以在视图中展示了, 在视图中输出分页链接使用 `links` 方法:
 
@@ -46,6 +48,7 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 - `getTotal`
 - `getFrom`
 - `getTo`
+- `count`
 
 有时你可能希望自定义分页, 只需使用 `Paginator::make` 方法,并把 记录集合(当前页需要展示的数据集), 总记录数(int), 每页记录数(int) 作为参数:
 

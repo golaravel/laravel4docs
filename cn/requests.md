@@ -1,13 +1,13 @@
-# 用户请求 与 用户提交的信息
+# 请求与输入
 
-- [操作用户提交信息基础](#basic-input)
+- [基本输入](#basic-input)
 - [Cookies](#cookies)
 - [用户提交信息持久化](#old-input)
 - [文件上传](#files)
 - [用户请求的详细信息](#request-information)
 
 <a name="basic-input"></a>
-## 操作用户提交信息基础
+## 基本输入
 
 Laravel使用一种简单的方式来访问用户提交的信息。 你可以用统一的方式来访问用户提交的信息，而不用为用户提交信息的方式操心。
 
@@ -36,7 +36,11 @@ Laravel使用一种简单的方式来访问用户提交的信息。 你可以用
 
 	$input = Input::except('credit_card');
 
-有一些javascript库，比如 Backbone 会以json格式提交信息。 通过 `Input::get` 来获取信息，使用上无差别。
+如果提交的表单含有 "数组" 形式的输入，可以使用点符号访问数组：
+
+	$input = Input::get('products.0.name');
+
+> **注意：** 有一些javascript库，比如 Backbone 会以json格式提交信息。 通过 `Input::get` 来获取信息，使用上无差别。
 
 <a name="cookies"></a>
 ## Cookies
@@ -52,6 +56,12 @@ Laravel会加密所有已创建的cookie信息，并附加上授权码，当客�
 	$response = Response::make('Hello World');
 
 	$response->withCookie(Cookie::make('name', 'value', $minutes));
+
+**Queueing A Cookie For The Next Response**
+
+If you would like to set a cookie before a response has been created, use the `Cookie::queue()` method. The cookie will automatically be attached to the final response from your application.
+
+	Cookie::queue($name, $value, $minutes);
 
 **创建一个永不过期的cookie键值对**
 

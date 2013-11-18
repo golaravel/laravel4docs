@@ -4,6 +4,7 @@
 - [Language Files](#language-files)
 - [Basic Usage](#basic-usage)
 - [Pluralization](#pluralization)
+- [Validation Localization](#validation)
 
 <a name="introduction"></a>
 ## Introduction
@@ -49,6 +50,10 @@ The first segment of the string passed to the `get` method is the name of the la
 
 > **Note**: If a language line does not exist, the key will be returned by the `get` method.
 
+You may also use the `trans` helper function, which is an alias for the `Lang::get` method.
+
+	echo trans('messages.welcome');
+
 **Making Replacements In Lines**
 
 You may also define place-holders in your language lines:
@@ -80,3 +85,9 @@ You may then use the `Lang::choice` method to retrieve the line:
 Since the Laravel translator is powered by the Symfony Translation component, you may also create more explicit pluralization rules easily:
 
 	'apples' => '{0} There are none|[1,19] There are some|[20,Inf] There are many',
+
+
+<a name="validation"></a>
+## Validation
+
+For localization for validation errors and messages, take a look at the <a href="/docs/validation#localization">documentation on Validation</a>.

@@ -45,7 +45,7 @@ The `--table` and `--create` options may also be used to indicate the name of th
 
 	php artisan migrate --package=vendor/package
 
-> **Note:** If you receive a "class not found" error when running migrations, try running the `composer update` command.
+> **Note:** If you receive a "class not found" error when running migrations, try running the `composer dump-autoload` command.
 
 <a name="rolling-back-migrations"></a>
 ## Rolling Back Migrations
@@ -96,6 +96,10 @@ Laravel also includes a simple way to seed your database with test data using se
 To seed your database, you may use the `db:seed` command on the Artisan CLI:
 
 	php artisan db:seed
+
+By default, the `db:seed` command runs the `DatabaseSeeder` class, which may be used to call other seed classes. However, you may use the `--class` option to specify a specific seeder class to run individually:
+
+	php artisan db:seed --class=UserTableSeeder
 
 You may also seed your database using the `migrate:refresh` command, which will also rollback and re-run all of your migrations:
 
