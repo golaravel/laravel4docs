@@ -1,7 +1,7 @@
 # 单元测试
 
 - [简介](#introduction)
-- [定义&运行测试](#defining-and-running-tests)
+- [定义 & 运行测试](#defining-and-running-tests)
 - [测试环境](#test-environment)
 - [测试中执行路由](#calling-routes-from-tests)
 - [模拟Facades](#mocking-facades)
@@ -113,7 +113,7 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 		$this->call('GET', '/');
 	}
 
-> **注意：** 你不能模拟 `Request` 的 facade。替代的方式为，在运行你的测试时，你预期的输入传给 `call` 方法。
+> **注意：** 你不能模拟 `Request` 的 facade。替代的方式为，在运行你的测试时，将你预期的输入传给 `call` 方法。
 
 <a name="framework-assertions"></a>
 ## 框架断言

@@ -1,28 +1,29 @@
 # 验证
 
-- [基础使用](#basic-usage)
-- [附带错误消息](#working-with-error-messages)
+- [基本使用](#basic-usage)
+- [使用错误消息](#working-with-error-messages)
 - [错误消息 & 视图](#error-messages-and-views)
 - [可用的验证规则](#available-validation-rules)
-- [Conditionally Adding Rules](#conditionally-adding-rules)
+- [有条件的添加规则](#conditionally-adding-rules)
 - [定制错误消息](#custom-error-messages)
 - [定制验证规则](#custom-validation-rules)
 
 <a name="basic-usage"></a>
 ## 基本使用
 
-Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以及获取错误消息。
+Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及获取错误消息。
 
-**基础验证例子**
+**基本验证例子**
 
 	$validator = Validator::make(
 		array('name' => 'Dayle'),
+
 		array('name' => 'required|min:5')
 	);
 
 传递给 `make` 函数的第一个参数是待验证的数据，第二个参数是对该数据需要应用的验证规则。
 
-多个验证规则可以通过 "|" 字符进行隔开，或者作为数组的一个单独的元素。
+多个验证规则可以通过 "|" 字符进行分隔，或者作为数组的一个单独的元素。
 
 **通过数组指定验证规则**
 
@@ -31,7 +32,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 		array('name' => array('required', 'min:5'))
 	);
 	
-**Validating Multiple Fields**
+**验证多个字段**
 
     $validator = Validator::make(
         array(
@@ -53,22 +54,22 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 		// The given data did not pass validation
 	}
 
-如果验证失败，您可以从验证器中获取错误消息。
+如果验证失败，你可以从验证器中获取错误消息。
 
 	$messages = $validator->messages();
 
-您也可以使用 `failed` 函数得到不带错误消息的没有通过验证的规则的数组。
+你也可以使用 `failed` 函数得到不带错误消息的没有通过验证的规则的数组。
 
 	$failed = $validator->failed();
 
 **文件验证**
 
-`Validator` 类提供了一些验证规则用于验证文件，比如 `size`、`mimes`等。在验证文件的时候，您可以和其他验证一样传递给验证器。
+`Validator` 类提供了一些验证规则用于验证文件，比如 `size`、`mimes`等。在验证文件的时候，你可以和其他数据一起传递给验证器。
 
 <a name="working-with-error-messages"></a>
-## 附带错误消息
+## 使用错误消息
 
-在一个 `Validator` 实例上调用 `messages` 函数之后，将会得到一个 `MessageBag` 实例，该实例拥有很多处理错误消息的方便的函数。
+在一个 `Validator` 实例上调用 `messages` 函数之后，将会得到一个 `MessageBag` 实例，该实例拥有很多方便使用错误消息的函数。
 
 **获取一个域的第一个错误消息**
 
@@ -111,7 +112,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 <a name="error-messages-and-views"></a>
 ## 错误消息 & 视图
 
-一旦您执行了验证，您需要一种简单的方法向视图反馈错误消息。这在 Lavavel 中能够方便的处理。以下面的路由作为例子：
+一旦你执行了验证，你需要一种简单的方法向视图反馈错误消息。这在 Lavavel 中能够方便的处理。以下面的路由作为例：
 
 	Route::get('register', function()
 	{
@@ -130,11 +131,11 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 		}
 	});
 
-注意当验证失败，我们使用 `withErrors` 函数把 `Validator` 实例传递给 Redirect。这个函数将刷新 Session 中保存的错误消息，使得在下次请求中能够可用。
+注意当验证失败，我们使用 `withErrors` 函数把 `Validator` 实例传递给 Redirect。这个函数将刷新 Session 中保存的错误消息，使得它们在下次请求中可用。
 
-然而，注意我们没有必要明确的在 GET 路由中绑定错误消息到路由。这是因为 Laravel 总会检查 Session 中的错误，并自动绑定它们到视图如果它们是可用的。**所以，对于每个请求，一个 `$errors` 变量在所有视图中总是可用的**，允许您方便的认为 `$errors` 总是被定义并可以安全使用的。`$errors` 变量将是一个 `MessageBag` 类的实例。
+然而，请注意在我们的 GET 路由中并没有明确的绑定错误消息到视图。这是因为 Laravel 总会检查 Session 中的错误，并且如果它们是可用的将自动绑定到视图。**所以，需要特别注意的是，对于每个请求，一个 `$errors` 变量在所有视图中总是可用的**，允许你方便的认为 `$errors` 变量总是被定义并可以安全使用的。`$errors` 变量将是一个 `MessageBag` 类的实例。
 
-所以，在跳转之后，您可以在视图中使用自动绑定的 `$errors` 变量：
+所以，在跳转之后，你可以在视图中使用自动绑定的 `$errors` 变量：
 
 	<?php echo $errors->first('email'); ?>
 
@@ -189,7 +190,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 <a name="rule-after"></a>
 #### after:_date_
 
-验证此规则的值必须在给定日期之后，日期将通过 PHP 函数 `strtotime` 传递。
+验证此规则的值必须在给定日期之后，该日期将被传递到 PHP 的 `strtotime` 函数。
 
 <a name="rule-alpha"></a>
 #### alpha
@@ -209,7 +210,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 <a name="rule-before"></a>
 #### before:_date_
 
-验证此规则的值必须在给定日期之前，日期将通过 PHP 函数 `strtotime` 传递。
+验证此规则的值必须在给定日期之前，该日期将被传递到 PHP 的 `strtotime` 函数。
 
 <a name="rule-between"></a>
 #### between:_min_,_max_
@@ -219,7 +220,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 <a name="rule-confirmed"></a>
 #### confirmed
 
-验证此规则的值必须和 `foo_confirmation` 的值相同。比如，需要验证此规则的域是 `password`，那么在输入中必须有一个与之相同的 `password_confirmation` 域。
+验证此规则的值必须和 `foo_confirmation` 的值相同。比如，需要验证此规则的字段是 `password`，那么在输入中必须有一个与之相同的 `password_confirmation` 字段。
 
 <a name="rule-date"></a>
 #### date
@@ -234,7 +235,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 <a name="rule-different"></a>
 #### different:_field_
 
-验证此规则的值必须与指定的 _field_ 域的值不同。
+验证此规则的值必须与指定的 _field_ 字段的值不同。
 
 <a name="rule-email"></a>
 #### email
@@ -254,7 +255,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用关于验证数据以�
 
 	'state' => 'exists:states,abbreviation'
 
-您也可以指定更多的条件，将以 "where" 的形式添加到查询。
+你也可以指定更多的条件，将以 "where" 的形式添加到查询。
 
 	'email' => 'exists:staff,email,account_id,1'
 
@@ -403,7 +404,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 <a name="custom-error-messages"></a>
 ## 定制错误消息
 
-如果有需要，您可以使用定制的错误消息代替默认的消息。这里有好几种定制错误消息的方法。
+如果有需要，你可以使用定制的错误消息代替默认的消息。这里有好几种定制错误消息的方法。
 
 **传递定制消息到验证器**
 
@@ -413,7 +414,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 	$validator = Validator::make($input, $rules, $messages);
 
-*注意:* `:attribute` 占位符将被实际的进行验证的域的名字代替，您也可以在错误消息中使用其他占位符。
+*注意:* `:attribute` 占位符将被实际的进行验证的域的名字代替，你也可以在错误消息中使用其他占位符。
 
 **其他验证占位符**
 
@@ -424,7 +425,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 		'in'      => 'The :attribute must be one of the following types: :values',
 	);
 
-有些时候，您可能希望只对一个指定的域指定定制的错误消息：
+有些时候，你可能希望只对一个指定的域指定定制的错误消息：
 
 **对一个指定的域指定定制的错误消息**
 
@@ -432,7 +433,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 		'email.required' => 'We need to know your e-mail address!',
 	);
 
-在一些情况下，您可能希望在一个语言文件中指定错误消息而不是直接传递给 `Validator`。为了实现这个目的，请在 `app/lang/xx/validation.php` 文件中添加您的定制消息到 `custom` 数组。
+在一些情况下，你可能希望在一个语言文件中指定错误消息而不是直接传递给 `Validator`。为了实现这个目的，请在 `app/lang/xx/validation.php` 文件中添加你的定制消息到 `custom` 数组。
 
 <a name="localization"></a>
 **在语言文件中指定错误消息**
@@ -446,7 +447,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 <a name="custom-validation-rules"></a>
 ## 定制验证规则
 
-Laravel 提供了一系列的有用的验证规则；但是，您可能希望添加自己的验证规则。其中一种方法是使用 `Validator::extend` 函数注册定制的验证规则：
+Laravel 提供了一系列的有用的验证规则；但是，你可能希望添加自己的验证规则。其中一种方法是使用 `Validator::extend` 函数注册定制的验证规则：
 
 **注册一个定制的验证规则**
 
@@ -457,13 +458,13 @@ Laravel 提供了一系列的有用的验证规则；但是，您可能希望添
 
 定制的验证器接受三个参数：待验证属性的名字、待验证属性的值以及传递给这个规则的参数。
 
-您也可以传递一个类的函数到 `extend` 函数，而不是使用闭包：
+你也可以传递一个类的函数到 `extend` 函数，而不是使用闭包：
 
 	Validator::extend('foo', 'FooValidator@validate');
 
-注意您需要为您的定制规则定义错误消息。您既可以使用一个行内的定制消息数组，也可以在验证语言文件中进行添加。
+注意你需要为你的定制规则定义错误消息。你既可以使用一个行内的定制消息数组，也可以在验证语言文件中进行添加。
  
-您也可以扩展 `Validator` 类本身，而不是使用闭包回调扩展验证器。为了实现这个目的，添加一个继承自 `Illuminate\Validation\Validator` 的验证器类。您可以添加在类中添加以 `validate` 开头的验证函数：
+你也可以扩展 `Validator` 类本身，而不是使用闭包回调扩展验证器。为了实现这个目的，添加一个继承自 `Illuminate\Validation\Validator` 的验证器类。你可以添加在类中添加以 `validate` 开头的验证函数：
 
 **扩展验证器类**
 
@@ -478,16 +479,16 @@ Laravel 提供了一系列的有用的验证规则；但是，您可能希望添
 
 	}
 
-下面，您需要注册定制的验证器扩展：
+下面，你需要注册定制的验证器扩展：
 
-**您需要注册定制的验证器扩展**
+**你需要注册定制的验证器扩展**
 
 	Validator::resolver(function($translator, $data, $rules, $messages)
 	{
 		return new CustomValidator($translator, $data, $rules, $messages);
 	});
 
-当创建一个定制的验证规则，您有时需要为错误消息定义一个定制的占位符。为了实现它，您可以像上面那样创建一个定制的验证器，并且在验证器中添加一个 `replaceXXX` 函数：
+当创建一个定制的验证规则，你有时需要为错误消息定义一个定制的占位符。为了实现它，你可以像上面那样创建一个定制的验证器，并且在验证器中添加一个 `replaceXXX` 函数：
 
 	protected function replaceFoo($message, $attribute, $rule, $parameters)
 	{
