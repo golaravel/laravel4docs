@@ -1,12 +1,12 @@
 # 单元测试
 
 - [简介](#introduction)
-- [定义&运行测试](#defining-and-running-tests)
+- [定义 & 运行测试](#defining-and-running-tests)
 - [测试环境](#test-environment)
 - [测试中执行路由](#calling-routes-from-tests)
 - [模拟Facades](#mocking-facades)
 - [框架断言](#framework-assertions)
-- [辅助方法](#helper-methods)
+- [辅助函数](#helper-methods)
 
 <a name="introduction"></a>
 ## 简介
@@ -19,7 +19,7 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 <a name="defining-and-running-tests"></a>
 ## 定义 & 运行测试
 
-要创建一个测试用例，只需要简单的在 `app/tests` 目录创建一个新的测试文件。测试类需要继承 `TestCase` 。然后你可以像使用 PHPUnit 一样来定义这些测试方法。
+要创建一个测试用例，只需要简单的在 `app/tests` 目录创建一个新的测试文件。测试类需要继承 `TestCase` 。然后你可以像使用 PHPUnit 一样来定义这些测试函数。
 
 **一个测试类示例**
 
@@ -34,7 +34,7 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 
 你可以在终端执行 `phpunit` 命令来运行应用程序中的所有测试。
 
-> **注意:** 如果你定义了自己的 `setUp` 方法，请确保调用了 `parent::setUp `。
+> **注意:** 如果你定义了自己的 `setUp` 函数，请确保调用了 `parent::setUp `。
 
 <a name="test-environment"></a>
 ## 测试环境
@@ -44,7 +44,7 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 <a name="calling-routes-from-tests"></a>
 ## 测试中执行路由
 
-在测试时可以很简单的使用 `call` 方法来执行一个路由：
+在测试时可以很简单的使用 `call` 函数来执行一个路由：
 
 **测试中执行路由**
 
@@ -64,13 +64,13 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 
 	$response = $this->action('GET', 'UserController@profile', array('user' => 1));
 
-`getContent` 方法将会返回和响应相同的字符串内容。如果路由返回 `视图（View）` ， 你可以使用 `original` 属性来访问：
+`getContent` 函数将会返回和响应相同的字符串内容。如果路由返回 `视图（View）` ， 你可以使用 `original` 属性来访问：
 
 	$view = $response->original;
 
 	$this->assertEquals('John', $view['name']);
 
-要执行一个 HTTPS 路由，可以使用 `callSecure` 方法：
+要执行一个 HTTPS 路由，可以使用 `callSecure` 函数：
 
 	$response = $this->callSecure('GET', 'foo/bar');
 
@@ -100,7 +100,7 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 		return 'All done!';
 	}
 
-我们可以通过在 facade 使用 `shouldReceive` 方法来模拟执行 `Event` 类, 它将返回一个 [Mockery](https://github.com/padraic/mockery) 模拟的实例。
+我们可以通过在 facade 使用 `shouldReceive` 函数来模拟执行 `Event` 类, 它将返回一个 [Mockery](https://github.com/padraic/mockery) 模拟的实例。
 
 
 
@@ -113,12 +113,12 @@ Laravel 自建了单元测试。事实上，我们支持使用自带的 PHPUnit 
 		$this->call('GET', '/');
 	}
 
-> **注意：** 你不能模拟 `Request` 的 facade。替代的方式为，在运行你的测试时，你预期的输入传给 `call` 方法。
+> **注意：** 你不能模拟 `Request` 的 facade。替代的方式为，在运行你的测试时，将你预期的输入传给 `call` 函数。
 
 <a name="framework-assertions"></a>
 ## 框架断言
 
-Laravel 提供了一些 `断言（assert）` 方法来让测试更加容易：
+Laravel 提供了一些 `断言（assert）` 函数来让测试更加容易：
 
 **断言响应为OK**
 
@@ -162,11 +162,11 @@ Laravel 提供了一些 `断言（assert）` 方法来让测试更加容易：
 	}
 
 <a name="helper-methods"></a>
-## 辅助方法
+## 辅助函数
 
-`TestCase` 类包含一些辅助方法来让应用程序测试更加容易。
+`TestCase` 类包含一些辅助函数来让应用程序测试更加容易。
 
-你可以使用 `be` 方法来设置当前通过验证的用户：
+你可以使用 `be` 函数来设置当前通过验证的用户：
 
 **设置当前通过验证的用户**
 
@@ -174,7 +174,7 @@ Laravel 提供了一些 `断言（assert）` 方法来让测试更加容易：
 
 	$this->be($user);
 
-你可以在测试中使用 `seed` 方法来重新填充你的数据库：
+你可以在测试中使用 `seed` 函数来重新填充你的数据库：
 
 **测试中重新填充数据库**
 
