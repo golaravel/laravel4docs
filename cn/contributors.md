@@ -4,6 +4,7 @@
 - [苏小林](#suxiaolin)
 - [徐小花](#xuxiaohua)
 - [何文祥](#hewenxiang)
+- [田爽](#tianshuang)
 
 <a name="wangsai"></a>
 ## 王赛
@@ -29,3 +30,8 @@
 - 邮箱：erhuabushuo@gmail.com
 - 网址：[hewenxiang.cn](http://hewenxiang.cn)
 - Github: [https://github.com/erhuabushuo/](https://github.com/erhuabushuo/)
+
+<a name="tianshuang"></a>
+## 田爽
+- 邮箱：exiats@gmail.com
+- Github: [https://github.com/silenceExia/](https://github.com/silenceExia/)
