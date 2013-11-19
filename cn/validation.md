@@ -5,8 +5,8 @@
 - [错误消息 & 视图](#error-messages-and-views)
 - [可用的验证规则](#available-validation-rules)
 - [有条件的添加规则](#conditionally-adding-rules)
-- [定制错误消息](#custom-error-messages)
-- [定制验证规则](#custom-validation-rules)
+- [自定义错误消息](#custom-error-messages)
+- [自定义验证规则](#custom-validation-rules)
 
 <a name="basic-usage"></a>
 ## 基本使用
@@ -71,25 +71,25 @@ Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及�
 
 在一个 `Validator` 实例上调用 `messages` 函数之后，将会得到一个 `MessageBag` 实例，该实例拥有很多方便使用错误消息的函数。
 
-**获取一个域的第一个错误消息**
+**获取一个字段的第一个错误消息**
 
 	echo $messages->first('email');
 
-**获取一个域的全部错误消息**
+**获取一个字段的全部错误消息**
 
 	foreach ($messages->get('email') as $message)
 	{
 		//
 	}
 
-**获取全部域的全部错误消息**
+**获取全部字段的全部错误消息**
 
 	foreach ($messages->all() as $message)
 	{
 		//
 	}
 
-**检查一个域是否存在消息**
+**检查一个字段是否存在消息**
 
 	if ($messages->has('email'))
 	{
@@ -313,7 +313,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及�
 
 验证此规则的值必须符合给定的正则表达式。
 
-**注意:** 当使用 `regex` 模式的时候，有必要使用数组指定规则，而不是管道分隔符，特别是正则表达式中包含一个管道字符的时候。
+**注意：** 当使用 `regex` 模式的时候，可能需要在一个数组中指定规则，而不是使用 "|" 分隔符，特别是正则表达式中包含一个 "|" 字符的时候。
 
 <a name="rule-required"></a>
 #### required
@@ -323,22 +323,22 @@ Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及�
 <a name="rule-required-if"></a>
 #### required_if:_field_,_value_
 
-当指定的域为某个值的时候，验证此规则的值必须存在。
+如果指定的 _field_ 字段等于指定的 _value_ ，那么验证此规则的值必须存在。
 
 <a name="rule-required-with"></a>
 #### required_with:_foo_,_bar_,...
 
-_仅当_指定的域存在的时候，验证此规则的值必须存在。
+_仅当_其它指定的字段存在的时候，验证此规则的值必须存在。
 
 <a name="rule-required-without"></a>
 #### required_without:_foo_,_bar_,...
 
-_仅当_指定的域不存在的时候，验证此规则的值必须存在。
+_仅当_其它指定的字段不存在的时候，验证此规则的值必须存在。
 
 <a name="rule-same"></a>
 #### same:_field_
 
-验证此规则的值必须与给定域的值相同。
+验证此规则的值必须与给定的 _field_ 字段的值相同。
 
 <a name="rule-size"></a>
 #### size:_value_
@@ -348,7 +348,7 @@ _仅当_指定的域不存在的时候，验证此规则的值必须存在。
 <a name="rule-unique"></a>
 #### unique:_table_,_column_,_except_,_idColumn_
 
-验证此规则的值必须在给定的数据库的表中唯一。如果 `column` 没有被指定，将使用该域的名字。
+验证此规则的值必须在给定的数据库的表中唯一。如果 `column` 没有被指定，将使用该字段的名字。
 
 **Unique 规则的基础使用**
 
@@ -376,37 +376,37 @@ _仅当_指定的域不存在的时候，验证此规则的值必须存在。
 验证此规则的值必须是一个合法的 URL。
 
 <a name="conditionally-adding-rules"></a>
-## Conditionally Adding Rules
+## 有条件的添加规则
 
-Sometimes you may wish to require a given field only if another field has a greater value than 100. Or you may need two fields to have a given value only when another field is present. Adding these validation rules doens't have to be a pain. First, create a `Validator` instance with your _static rules_ that never change:
+有时你可能希望给定的字段仅当另一个字段的值大于100的时候必须存在。或者你可能需要两个字段均含有一个给定的值，仅当另一个字段存在的时候。添加这些验证规则并没有那么麻烦。首先，创建一个使用你永远不会改变的 _static rules_ 的 `Validator` 实例：
 
 	$v = Validator::make($data, array(
 		'email' => 'required|email',
 		'games' => 'required|numeric',
 	));
 
-Let's assume our web application is for game collectors. If a game collector registers with our application and they own more than 100 games, we want them to explain why they own so many games. For example, perhaps they run a game re-sell shop, or maybe they just enjoy collecting. To conditionally add this requirement, we can use the `sometimes` method on the `Validator` instance.
+假设我们的WEB应用程序是服务于游戏收藏爱好者们。如果一个游戏收藏爱好者注册了我们的应用程序，并且他们拥有100多款游戏，我们想让他们说明为什么他们会拥有如此多的游戏。例如，或许他们要开一个游戏转售店，或者也许他们只是喜欢收集。为了有条件的添加这个需求，我们可以使用 `Validator` 实例的 `sometimes` 函数。
 
 	$v->sometimes('reason', 'required|max:500', function($input)
 	{
 		return $input->games >= 100;
 	});
 
-The first argument passed to the `sometimes` method is the name of the field we are conditionally validating. The second argument is the rules we want to add. If the `Closure` passed as the third argument returns `true`, the rules will be added. This method makes it a breeze to build complex conditional validations. You may even add conditional validations for several fields at once:
+`sometimes` 函数的第一个参数是我们有条件的验证的字段名。第二个参数是我们要添加的规则。如果 `Closure` 作为第三个参数且返回了 `true`，规则将被添加。这种方法可以很容易构建复杂的条件验证。你甚至可以一次性为多个字段添加条件验证：
 
 	$v->sometimes(array('reason', 'cost'), 'required', function($input)
 	{
 		return $input->games >= 100;
 	});
 
-> **Note:** The `$input` parameter passed to your `Closure` will be an instance of `Illuminate\Support\Fluent` and may be used as an object to access your input and files.
+> **注意：** 传递到你的 `Closure` 中的 `$input` 参数将被作为 `Illuminate\Support\Fluent` 的一个实例，并且可能被用作一个对象来访问你的输入和文件。
 
 <a name="custom-error-messages"></a>
-## 定制错误消息
+## 自定义错误消息
 
-如果有需要，你可以使用定制的错误消息代替默认的消息。这里有好几种定制错误消息的方法。
+如果有需要，你可以使用自定义的错误消息代替默认的消息。这里有好几种自定义错误消息的方法。
 
-**传递定制消息到验证器**
+**传递自定义消息到验证器**
 
 	$messages = array(
 		'required' => 'The :attribute field is required.',
@@ -414,7 +414,7 @@ The first argument passed to the `sometimes` method is the name of the field we 
 
 	$validator = Validator::make($input, $rules, $messages);
 
-*注意:* `:attribute` 占位符将被实际的进行验证的域的名字代替，你也可以在错误消息中使用其他占位符。
+*注意:* `:attribute` 占位符将被实际要验证的字段名替换，你也可以在错误消息中使用其他占位符。
 
 **其他验证占位符**
 
@@ -425,15 +425,15 @@ The first argument passed to the `sometimes` method is the name of the field we 
 		'in'      => 'The :attribute must be one of the following types: :values',
 	);
 
-有些时候，你可能希望只对一个指定的域指定定制的错误消息：
+有些时候，你可能希望只对一个指定的字段指定自定义的错误消息：
 
-**对一个指定的域指定定制的错误消息**
+**对一个指定的字段指定自定义的错误消息**
 
 	$messages = array(
 		'email.required' => 'We need to know your e-mail address!',
 	);
 
-在一些情况下，你可能希望在一个语言文件中指定错误消息而不是直接传递给 `Validator`。为了实现这个目的，请在 `app/lang/xx/validation.php` 文件中添加你的定制消息到 `custom` 数组。
+在一些情况下，你可能希望在一个语言文件中指定你的错误消息而不是直接传递给 `Validator`。为了实现这个目的，请在 `app/lang/xx/validation.php` 文件中添加你的自定义消息到 `custom` 数组。
 
 <a name="localization"></a>
 **在语言文件中指定错误消息**
@@ -445,26 +445,26 @@ The first argument passed to the `sometimes` method is the name of the field we 
 	),
 
 <a name="custom-validation-rules"></a>
-## 定制验证规则
+## 自定义验证规则
 
-Laravel 提供了一系列的有用的验证规则；但是，你可能希望添加自己的验证规则。其中一种方法是使用 `Validator::extend` 函数注册定制的验证规则：
+Laravel 提供了一系列有用的验证规则；但是，你可能希望添加自己的验证规则。其中一种方法是使用 `Validator::extend` 函数注册自定义的验证规则：
 
-**注册一个定制的验证规则**
+**注册一个自定义的验证规则**
 
 	Validator::extend('foo', function($attribute, $value, $parameters)
 	{
 		return $value == 'foo';
 	});
 
-定制的验证器接受三个参数：待验证属性的名字、待验证属性的值以及传递给这个规则的参数。
+自定义的验证器接受三个参数：待验证属性的名字、待验证属性的值以及传递给这个规则的参数。
 
 你也可以传递一个类的函数到 `extend` 函数，而不是使用闭包：
 
 	Validator::extend('foo', 'FooValidator@validate');
 
-注意你需要为你的定制规则定义错误消息。你既可以使用一个行内的定制消息数组，也可以在验证语言文件中进行添加。
+注意你需要为你的自定义规则定义错误消息。你既可以使用一个行内的自定义消息数组，也可以在验证语言文件中进行添加。
  
-你也可以扩展 `Validator` 类本身，而不是使用闭包回调扩展验证器。为了实现这个目的，添加一个继承自 `Illuminate\Validation\Validator` 的验证器类。你可以添加在类中添加以 `validate` 开头的验证函数：
+你也可以扩展 `Validator` 类本身，而不是使用闭包回调扩展验证器。为了实现这个目的，添加一个继承自 `Illuminate\Validation\Validator` 的验证器类。你可以在类中添加以 `validate` 开头的验证函数：
 
 **扩展验证器类**
 
@@ -479,16 +479,16 @@ Laravel 提供了一系列的有用的验证规则；但是，你可能希望添
 
 	}
 
-下面，你需要注册定制的验证器扩展：
+下面，你需要注册自定义的验证器扩展：
 
-**你需要注册定制的验证器扩展**
+**你需要注册自定义的验证器扩展**
 
 	Validator::resolver(function($translator, $data, $rules, $messages)
 	{
 		return new CustomValidator($translator, $data, $rules, $messages);
 	});
 
-当创建一个定制的验证规则，你有时需要为错误消息定义一个定制的占位符。为了实现它，你可以像上面那样创建一个定制的验证器，并且在验证器中添加一个 `replaceXXX` 函数：
+当创建一个自定义的验证规则，你有时需要为错误消息定义一个自定义的占位符。为了实现它，你可以像上面那样创建一个自定义的验证器，并且在验证器中添加一个 `replaceXXX` 函数：
 
 	protected function replaceFoo($message, $attribute, $rule, $parameters)
 	{
