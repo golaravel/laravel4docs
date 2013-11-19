@@ -38,7 +38,7 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 	{
 		// Return Illuminate\Cache\Repository instance...
 	});
-传入"extend"方法中的第一个参数是这个驱动的名字.这个会与你在"app/config/cache.php"文件中的"driver"选项相对应。第二个参数是一个返回"Illuminate\Cache\Repository"实例的闭包。 这闭包会传入"$app", 它是"Illuminate\Foundation\Application" 的一个实例而且是一个IoC容器.
+传入"extend"方法中的第一个参数是这个驱动的名字.这个会与你在"app/config/cache.php"文件中的"driver"选项相对应。第二个参数是一个返回"Illuminate\Cache\Repository"实例的闭包。 这闭包会传入参数"$app", 它是"Illuminate\Foundation\Application" 的一个实例而且是一个IoC容器.
 
 为了创建我们定制的缓存驱动,我们首先应该实现"Illuminate\Cache\StoreInterface"接口. 因此,我们的 MongDB 缓存的实现应该是这样的:
 
@@ -73,16 +73,16 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 
 
 <a name="session"></a>
-## Session
+## 会话 Session
 
-Extending Laravel with a custom session driver is just as easy as extending the cache system. Again, we will use the `extend` method to register our custom code:
+为Laravel扩展一个定制的Session驱动跟扩展一个缓存系统一样简单.同样,我们需要用"extend"方法来注册定制的驱动:
 
 	Session::extend('mongo', function($app)
 	{
 		// Return implementation of SessionHandlerInterface
 	});
 
-Note that our custom cache driver should implement the `SessionHandlerInterface`. This interface is included in the PHP 5.4+ core. If you are using PHP 5.3, the interface will be defined for you by Laravel so you have forward-compatibility. This interface contains just a few simple methods we need to implement. A stubbed MongoDB implementation would look something like this:
+请注意,定制的缓存驱动需要实现"SessionHandlerInterface"接口.这个接口在PHP5.4+core中.如果你正在使用PHP5.3,Laravel会帮你定义这个接口让你的系统可以向前兼容. 我们只需要实现这个接口中的一些简单的方法. 下面是一个简化的MongoDB实现:
 
 	class MongoHandler implements SessionHandlerInterface {
 
@@ -95,11 +95,12 @@ Note that our custom cache driver should implement the `SessionHandlerInterface`
 
 	}	
 
-Since these methods are not as readily understandable as the cache `StoreInterface`, let's quickly cover what each of the methods do:
+上面这些方法不像在"StoreInterface"缓存接口中的方法一样让人容易理解.下面让我们快速的了解一下每一个方法的功能:
 
-- The `open` method would typically be used in file based session store systems. Since Laravel ships with a `native` session driver that uses PHP's native file storage for sessions, you will almost never need to put anything in this method. You can leave it as an empty stub. It is simply a fact of poor interface design (which we'll discuss later) that PHP requires us to implement this method.
-- The `close` method, like the `open` method, can also usually be disregarded. For most drivers, it is not needed.
-- The `read` method should return the string version of the session data associated with the given `$sessionId`. There is no need to do any serialization or other encoding when retrieving or storing session data in your driver, as Laravel will perform the serialization for you.
+- "open"方法通常被用于基于文件的Session存储系统.因为Laravel自带了PHP原生文件存储session的session驱动.因此,你不需要在这个方法中添加任何代码.事实上 PHP强制要求我们实现这个不需要添加任何代码的方法是实在一个糟糕的接口设计(在后面的内容中会讨论这一点).
+-"close"方法也像"open"方法一样,通常是可以被忽略的.大多数驱动不需要这个方法.
+-"read"方法会返回一个与传入的"$sessionId"相关联的字符串形式的Session数据.将驱动中的session数据取出时,我们不需要做任何的序列化和转码的工作.因为Laravel会帮你处理这些.
+-
 - The `write` method should write the given `$data` string associated with the `$sessionId` to some persistent storage system, such as MongoDB, Dynamo, etc.
 - The `destroy` method should remove the data associated with the `$sessionId` from persistent storage.
 - The `gc` method should destroy all session data that is older than the given `$lifetime`, which is a UNIX timestamp. For self-expiring systems like Memcached and Redis, this method may be left empty.
