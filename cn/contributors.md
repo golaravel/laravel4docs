@@ -5,12 +5,13 @@
 - [徐小花](#xuxiaohua)
 - [何文祥](#hewenxiang)
 - [田爽](#tianshuang)
+- [黄当武](#huangwudang)
 
 <a name="wangsai"></a>
 ## 王赛
-- 邮箱：golaravel.com@gmail.com
+- 邮箱：wangsai@bootcss.com
 - 网址： [Bootstrap中文网](http://www.bootcss.com) & [Laravel中文网](http://www.golaravel.com)
-- Github: [https://github.com/saiwang/](https://github.com/saiwang/)
+- Github: [https://github.com/wangsai/](https://github.com/wangsai/)
 
 <a name="suxiaolin"></a>
 ## 苏小林
@@ -35,3 +36,8 @@
 ## 田爽
 - 邮箱：exiats@gmail.com
 - Github: [https://github.com/silenceExia/](https://github.com/silenceExia/)
+
+<a name="huangwudang"></a>
+## 黄当武
+- 邮箱：jasonhuanghust@gmail.com
+- Github: [https://github.com/JasonHuangHuster/](https://github.com/JasonHuangHuster/)
