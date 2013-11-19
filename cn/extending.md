@@ -10,28 +10,28 @@
 
 <a name="introduction"></a>
 ## 介绍
-Laravel 为你提供了很多可扩展的地方, 通过它们你可以定制框架中一些核心组件的行为,甚至对这些核心组件进行全部替换. 例如, 哈希组件是在 "HaserInterface" 接口中被定义的,你可以根据应用程序的需求来选择是否实现它. 你也可以扩展 "Request" 对象来添加专属你的"帮助"方法.你甚至可以添加全新的 用户验证,缓存以及会话(Session) 驱动!
+Laravel 为你提供了很多可扩展的地方， 通过它们你可以定制框架中一些核心组件的行为，甚至对这些核心组件进行全部替换。 例如， 哈希组件是在 "HaserInterface" 接口中被定义的，你可以根据应用程序的需求来选择是否实现它。 你也可以扩展 "Request" 对象来添加专属你的"帮助"方法。你甚至可以添加全新的 用户验证，缓存以及会话(Session) 驱动！
 
-Laravel 的组件通常以两种方式进行扩展:在IoC容器中绑定新的实现,或者为一个扩展注册一个 "Manager" 类,第二种方式运用了设计模式中"工厂"的理念.在这一章中,我们会探索扩展框架的各种方法以及查看一些具体的实现代码.
+Laravel 的组件通常以两种方式进行扩展:在IoC容器中绑定新的实现，或者为一个扩展注册一个 "Manager" 类，第二种方式运用了设计模式中"工厂"的理念。在这一章中，我们会探索扩展框架的各种方法以及查看一些具体的实现代码。
 
 > **注意:** 
-请记住,Laravel 组件的扩展通常是以一下两种方法的其中一种实现的:IoC绑定和 "Manager" 类. Manager类充当实现工厂模式的作用,它负责缓存、会话(Session)等基本驱动的实例化工作.
+请记住，Laravel 组件的扩展通常是以一下两种方法的其中一种实现的:IoC绑定和 "Manager" 类。 Manager类充当实现工厂模式的作用，它负责缓存、会话(Session)等基本驱动的实例化工作。
 
 <a name="managers-and-factories"></a>
 ## 管理者 & 工厂
 
-Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建工作. 包括 缓存、会话(Session)、用户验证以及队列组件。"Manager"类负责根据应用程序中相关配置来创建一个驱动实现。例如，"CacheManager"类可以创建 <a href="http://www.php.net/apc">APC</a>、Memcached、Native 以及其他各种缓存驱动的实现。
-每一个Manager类都包含有一个"extend"方法,通过它可以轻松的将新驱动中的解决方案和功能注入到Manager中. 下面,我们会通过列举一些向Manager中注入定制驱动的例子来依次对它们进行说明.
+Laravel 有几个 "Manager" 类 ，用来管理一些基本驱动组件的创建工作。 包括 缓存、会话(Session)、用户验证以及队列组件。"Manager"类负责根据应用程序中相关配置来创建一个驱动实现。例如，"CacheManager"类可以创建 <a href="http://www.php.net/apc">APC</a>、Memcached、Native 以及其他各种缓存驱动的实现。
+每一个Manager类都包含有一个"extend"方法，通过它可以轻松的将新驱动中的解决方案和功能注入到Manager中。下面，我们会通过列举一些向Manager中注入定制驱动的例子来依次对它们进行说明。
 
 
 > **注意:**
-花一些时间来探索Laravel中各种不同的"Manager"类,例如,"CacheManager"以及"SessionManager". 通过阅读这些类,可以让你对Laravel的底层实现有一个更加彻底的了解. 所有的"Manager"类都继承了"Illuminate\Support\Manager"基类, 这个基类为每一个"Manager"类提供了一些有用的,常见的功能.
+花一些时间来探索Laravel中各种不同的"Manager"类，例如，"CacheManager"以及"SessionManager"。通过阅读这些类，可以让你对Laravel的底层实现有一个更加彻底的了解。 所有的"Manager"类都继承了"Illuminate\Support\Manager"基类， 这个基类为每一个"Manager"类提供了一些有用的，常见的功能。
  
 
 <a name="cache"></a>
 ## 缓存
 
-要扩展Laravel的缓存机制,我们需要使用"CacheManager"的"extend"方法来为"manager"绑定一个定制的驱动解析器,这个方法在所有的"manager"中都是通用的。例如,注册一个新的名叫"mongo"的缓存驱动,我们需要做一下操作:
+要扩展Laravel的缓存机制，我们需要使用"CacheManager"的"extend"方法来为"manager"绑定一个定制的驱动解析器，这个方法在所有的"manager"中都是通用的。例如，注册一个新的名叫"mongo"的缓存驱动，我们需要做一下操作:
 
 
 	Cache::extend('mongo', function($app)
@@ -39,9 +39,9 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 		// Return Illuminate\Cache\Repository instance...
 	});
 
-传入"extend"方法中的第一个参数是这个驱动的名字.这个会与你在"app/config/cache.php"配置文件中的"driver"选项相对应。第二个参数是一个返回"Illuminate\Cache\Repository"实例的闭包。 这闭包需要传入一个"$app"实例, 它是"Illuminate\Foundation\Application" 的一个实例，并且是一个IoC容器.
+传入"extend"方法中的第一个参数是这个驱动的名字。这个会与你在"app/config/cache.php"配置文件中的"driver"选项相对应。第二个参数是一个返回"Illuminate\Cache\Repository"实例的闭包。 这闭包需要传入一个"$app"实例， 它是"Illuminate\Foundation\Application" 的一个实例，并且是一个IoC容器。
 
-为了创建我们定制的缓存驱动,我们首先应该实现"Illuminate\Cache\StoreInterface"接口. 因此,我们的 MongDB 缓存的实现应该是这样的:
+为了创建我们定制的缓存驱动，我们首先应该实现"Illuminate\Cache\StoreInterface"接口。 因此，我们的 MongDB 缓存的实现应该是这样的:
 
 	class MongoStore implements Illuminate\Cache\StoreInterface {
 
@@ -55,7 +55,7 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 
 	}
 
-我们要用一个MongoDB连接来实现所有这些方法.一旦完成了这些实现,我们就完成了定制驱动的注册。
+我们要用一个MongoDB连接来实现所有这些方法。一旦完成了这些实现,我们就完成了定制驱动的注册。
 
 	use Illuminate\Cache\Repository;
 
@@ -64,26 +64,26 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 		return new Repository(new MongoStore);
 	});
 
-正如你在上面的例子中所看到的,你会在创建定制缓存驱动时使用到"Illuminate\Cache\Repository"基类.通常情况下,不需要自己创建"Repository"类.
+正如你在上面的例子中所看到的，你会在创建定制缓存驱动时使用到"Illuminate\Cache\Repository"基类。通常情况下，不需要自己创建"Repository"类。
 
-如果你不知道将定制的缓存驱动代码放在哪里,那么可以考虑将它们放在<a href="https://packagist.org/">Packagist</a>中,或者你可以在应用程序的主目录下创建一个"Extension"子目录.例如,如果你的应用程序叫"Snappy",你可以将你的缓存扩展放在"app/Snappy/Extensions/MongoStore.php"中. 请记住,Laravel对于应用程序的结构没有严格的限制,你可以自由地根据自己的选择来组织你的应用程序结构。
+如果你不知道将定制的缓存驱动代码放在哪里，那么可以考虑将它们放在<a href="https://packagist.org/">Packagist</a>中，或者你可以在应用程序的主目录下创建一个"Extension"子目录。例如，如果你的应用程序叫"Snappy"，你可以将你的缓存扩展放在"app/Snappy/Extensions/MongoStore.php"中。 请记住，Laravel对于应用程序的结构没有严格的限制，你可以自由地根据自己的选择来组织你的应用程序结构。
 
 
 > **注意:** 
-当你不知道将代码放在哪里时,请回想一下"service provider" .  我们已经讨论过,利用"service provider"来组织你的框架扩展是组织代码的最好方式。
+当你不知道将代码放在哪里时，请回想一下"service provider" 。  我们已经讨论过，利用"service provider"来组织你的框架扩展是组织代码的最好方式。
 
 
 <a name="session"></a>
 ## 会话 Session
 
-为Laravel扩展一个定制的Session驱动跟扩展一个缓存系统一样简单。同样,我们需要用 "extend" 方法来注册定制的驱动:
+为Laravel扩展一个定制的Session驱动跟扩展一个缓存系统一样简单。同样，我们需要用 "extend" 方法来注册定制的驱动:
 
 	Session::extend('mongo', function($app)
 	{
 		// Return implementation of SessionHandlerInterface
 	});
 
-请注意,定制的缓存驱动需要实现"SessionHandlerInterface"接口。这个接口包含在在PHP5.4+core中。如果你正在使用PHP5.3，Laravel会帮你定义这个接口，这使得你的系统可以向前兼容。我们只需要实现这个接口中的一些简单的方法. 下面是一个简化的MongoDB实现:
+请注意，定制的缓存驱动需要实现"SessionHandlerInterface"接口。这个接口包含在在PHP5.4+core中。如果你正在使用PHP5.3，Laravel会帮你定义这个接口，这使得你的系统可以向前兼容。我们只需要实现这个接口中的一些简单的方法。 下面是一个简化的MongoDB实现:
 
 	class MongoHandler implements SessionHandlerInterface {
 
@@ -96,12 +96,12 @@ Laravel 有几个 "Manager" 类 , 用来管理一些基本驱动组件的创建�
 
 	}	
 
-上面这些方法不像在"StoreInterface"缓存接口中的方法一样让人容易理解.下面让我们快速的了解一下每一个方法的功能:
+上面这些方法不像在"StoreInterface"缓存接口中的方法一样让人容易理解。下面让我们快速的了解一下每一个方法的功能:
 
-- "open"方法通常在基于文件的Session存储系统中使用.因为Laravel自带了PHP原生文件存储session的驱动。因此,你不需要在这个方法中添加任何实现。事实上 PHP强制要求我们实现这个不需要添加任何代码的方法，这实在是一个糟糕的接口设计(在后面的内容中会讨论这一点)。
--"close"方法也像"open"方法一样,通常是可以被忽略的。大多数驱动不需要这个方法。
--"read"方法会返回一个与传入的"$sessionId"相关联的字符串形式的Session数据.将驱动中的Session数据取出时,我们不需要做任何的序列化和转码的工作.因为Laravel会帮你处理这些。
--"write"方法是将与"$sessionId"相关联的"$data"字符串写入到一些持久化存储系统中.例如: MongoDB,Dynamo 等等.
+- "open"方法通常在基于文件的Session存储系统中使用。因为Laravel自带了PHP原生文件存储session的驱动。因此，你不需要在这个方法中添加任何实现。事实上 PHP强制要求我们实现这个不需要添加任何代码的方法，这实在是一个糟糕的接口设计(在后面的内容中会讨论这一点)。
+-"close"方法也像"open"方法一样，通常是可以被忽略的。大多数驱动不需要这个方法。
+-"read"方法会返回一个与传入的"$sessionId"相关联的字符串形式的Session数据。将驱动中的Session数据取出时，我们不需要做任何的序列化和转码的工作。因为Laravel会帮你处理这些。
+-"write"方法是将与"$sessionId"相关联的"$data"字符串写入到一些持久化存储系统中。例如: MongoDB，Dynamo 等等。
 -"destroy"方法将与"$sessionId"相关的数据从持久化系统中移除。
 -"gc"方法会删除超过传入"$lifetime"(一个UNIX 时间戳)的所有Session数据。对于像Memcached和Redis这一类（self-expired）自动管理超期的系统，"gc"方法内不应该有任何代码。
 
