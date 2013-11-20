@@ -19,7 +19,7 @@ Laravel 旨在让验证实现简单。事实上，大部分都已经配置好了
 如果你的应用中不使用 Eloquent，你可以使用 Laravel 查询构造器来使用 `数据库` 验证驱动。
 
 <a name="storing-passwords"></a>
-## 密码存储
+## 保存密码
 
 Laravel `Hash` 类提供了可靠的<a href='http://en.wikipedia.org/wiki/Bcrypt'>Bcrypt</a>散列算法：
 
