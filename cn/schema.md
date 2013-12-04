@@ -78,6 +78,7 @@ Laravel 的 `Schema` 类提供了一种与数据库无关的方式维护表。�
 `$table->timestamps();`  |  添加 **created\_at** 和 **updated\_at** 列
 `$table->softDeletes();`  |  添加 **deleted\_at** 列用于软删除
 `$table->text('description');`  |  TEXT 类型
+`$table->longtext('description');`  |  LONGTEXT 类型
 `$table->binary('data');`  |  BLOB 类型
 `$table->enum('choices', array('foo', 'bar'));` | ENUM 类型
 `->nullable()`  |  指明该字段允许 NULL 值

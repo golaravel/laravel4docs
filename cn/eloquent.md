@@ -818,7 +818,7 @@ Eloquent 集合也包含一些方法来遍历和过滤所包含的项：
 
 过滤集合时，你所提供的回调函数将被作为 [array_filter](http://php.net/manual/en/function.array-filter.php) 的回调函数使用。
 
-	$users = $user->filter(function($user)
+	$users = $users->filter(function($user)
 	{
 		if($user->isAdmin())
 		{

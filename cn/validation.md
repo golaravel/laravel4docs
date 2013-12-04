@@ -156,6 +156,8 @@ Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及�
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
 - [Different](#rule-different)
+- [Digits](#rule-digits)
+- [Digits Between](#rule-digitsbetween)
 - [E-Mail](#rule-email)
 - [Exists (Database)](#rule-exists)
 - [Image (File)](#rule-image)
@@ -236,6 +238,16 @@ Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及�
 #### different:_field_
 
 验证此规则的值必须与指定的 _field_ 字段的值不同。
+
+<a name="rule-digits"></a>
+#### digits:_value_
+
+The field under validation must be _numeric_ and must have an exact length of _value_.
+
+<a name="rule-digitsbetween"></a>
+#### digitsbetween:_min_,_max_
+
+The field under validation must have a length between the given _min_ and _max_.
 
 <a name="rule-email"></a>
 #### email
