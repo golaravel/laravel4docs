@@ -2,6 +2,7 @@
 
 - [简介](#introduction)
 - [基本用例](#basic-usage)
+- [Where To Register Bindings](#where-to-register)
 - [自动解析](#automatic-resolution)
 - [实际用例](#practical-usage)
 - [服务提供器](#service-providers)
@@ -48,6 +49,13 @@ IoC 容器有两种方法来解决依赖关系：通过闭包回调或者自动�
 	$foo = new Foo;
 
 	App::instance('foo', $foo);
+
+<a name="where-to-register"></a>
+## Where To Register Bindings
+
+IoC bindings, like event handlers or route filters, generally fall under the title of "bootstrap code". In other words, they prepare your application to actually handle requests, and usually need to be executed before a route or controller is actually called. Like most other bootstrap code, the `start` files are always an option for registering IoC bindings. Alternatively, you could create an `app/ioc.php` (filename does not matter) file and require that file from your `start` file.
+
+If your application has a very large number of IoC bindings, or you simply wish to organize your IoC bindings in separate files by category, you may register your bindings in a [service provider](#service-providers).
 
 <a name="automatic-resolution"></a>
 ## 自动解析

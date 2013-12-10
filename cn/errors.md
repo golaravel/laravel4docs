@@ -9,7 +9,9 @@
 <a name="error-detail"></a>
 ## 错误详情
 
-默认情况下，应用中会默认输出错误详情。这就是说当有错误发生时，你将看到一个详细的堆栈轨迹（stack trace）和错误信息页面。你可以在`app/config/app.php`文件中将`debug`配置选项设为`false`来关闭它。**强烈建议在生产环境中关闭该选项。**
+默认情况下，应用中会默认输出错误详情。这就是说当有错误发生时，你将看到一个详细的堆栈轨迹（stack trace）和错误信息页面。你可以在`app/config/app.php`文件中将`debug`配置选项设为`false`来关闭它。
+
+> **Note:** It is strongly recommended that you turn off error detail in a production environment.
 
 <a name="handling-errors"></a>
 ## 处理错误
@@ -46,25 +48,27 @@
 
 如果同时有多个异常处理器，应该先定义最通用的，然后定义最具体的异常处理器。例如，处理所有 `Exception` 类型的异常处理器应当在处理 `Illuminate\Encryption\DecryptException` 类型的异常处理器之前。
 
+### Where To Place Error Handlers
+
+There is no default "home" for error handler registrations. Laravel offers you freedom in this area. One option is to define the handlers in your `start/global.php` file. In general, this is a convenient location to place any "bootstrapping" code. If that file is getting crowded, you could create an `app/errors.php` file, and `require` that file from your `start/global.php` script. A third option is to create a [service provider](/docs/ioc#service-providers) that registers the handlers. Again, there is no single "correct" answer. Choose a location that you are comfortable with.
+
 <a name="http-exceptions"></a>
 ## HTTP 异常
 
-HTTP异常一般发生在用户请求服务器的过程中。可能是页面未找到错误（404)、未授权错误（401)或者系统产生的500错误。为返回这些response，可以使用如下方法：
+Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to return such a response, use the following:
 
-	App::abort(404, 'Page not found');
+	App::abort(404);
 
-第一个参数是HTTP状态码，第二个参数是你自定义的针对此状态吗的错误信息。
+Optionally, you may provide a response:
 
-如果要产生一个401未授权异常，只需如下所示：
+	App::abort(403, 'Unauthorized action.');
 
-	App::abort(401, 'You are not authorized.');
-
-这些异常可以在request生命周期内的任何时间产生。
+This method may be used at any time during the request's lifecycle.
 
 <a name="handling-404-errors"></a>
 ## 处理404错误
 
-你可以注册一个错误处理器来处理应用中的所有"404 Not Found"错误，这样就可以返回一个自定义的404错误页面：
+你可以注册一个错误处理器来处理应用中的所有"404 Not Found"错误，这样就可以更早的返回一个自定义的404错误页面：
 
 	App::missing(function($exception)
 	{
@@ -74,7 +78,7 @@ HTTP异常一般发生在用户请求服务器的过程中。可能是页面未�
 <a name="logging"></a>
 ## 日志
 
-Laravel日志工具为强大的[Monolog](http://github.com/seldaek/monolog)提供了一层简单的抽象层。默认情况下，Laravel被配置为每天为应用创建单独的日志文件，这些文件存放在`app/storage/logs`目录下。你可以通过如下方法输出log：
+Laravel日志工具构建在强大的[Monolog](http://github.com/seldaek/monolog)库之上，并提供了一层简单的抽象层。默认情况下，Laravel为应用创建一个单独的日志文件，此文件的路径是`app/storage/laravel.log`。你可以通过如下方法输出log：
 
 	Log::info('This is some useful information.');
 

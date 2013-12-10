@@ -96,6 +96,20 @@ Laravel 自带的 Eloquent ORM 为您的数据库提供了一个优雅的、简�
 
 	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
+**Chunking Results**
+
+If you need to process a lot (thousands) of Eloquent records, using the `chunk` command will allow you to do without eating all of your RAM:
+
+	User::chunk(200, function($users)
+	{
+		foreach ($users as $user)
+		{
+			//
+		}
+	});
+
+The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is pulled from the database.
+
 **指定查询的数据库连接**
 
 您可能需要在运行一个 Eloquent 查询的时候指定数据库连接，只需要使用 `on` 函数：
@@ -168,7 +182,14 @@ Laravel 自带的 Eloquent ORM 为您的数据库提供了一个优雅的、简�
 
 **使用模型的 Create 函数**
 
+	// Create a new user in the database...
 	$user = User::create(array('name' => 'John'));
+
+	// Retrieve the user by the attributes, or create it if it doesn't exist...
+	$user = User::firstOrCreate(array('name' => 'John'));
+
+	// Retrieve the user by the attributes, or instantiate a new instance...
+	$user = User::firstOrNew(array('name' => 'John'));
 
 为了更新一个模型，您可以检索它，改变一个属性，然后使用 `save` 函数：
 
@@ -373,9 +394,11 @@ Laravel 自带的 Eloquent ORM 为您的数据库提供了一个优雅的、简�
 
 	select * from phones where user_id = 1
 
-注意 Eloquent 假设关系的外键基于模型的名字。在这个例子中假设 `Phone` 模型使用一个 `user_id` 外键。如果您希望覆盖这个惯例，您可以为传递 `hasOne` 函数传递第二个参数：
+注意 Eloquent 假设关系的外键基于模型的名字。在这个例子中假设 `Phone` 模型使用一个 `user_id` 外键。如果您希望覆盖这个惯例，您可以为传递 `hasOne` 函数传递第二个参数。Furthermore, you may pass a third argument to the method to specify which local column that should be used for the association:
 
-	return $this->hasOne('Phone', 'custom_key');
+	return $this->hasOne('Phone', 'foreign_key');
+
+	return $this->hasOne('Phone', 'foreign_key', 'local_key');
 
 在 `Phone` 模型定义逆向关系，我们使用 `belongsTo` 函数：
 
@@ -397,6 +420,17 @@ Laravel 自带的 Eloquent ORM 为您的数据库提供了一个优雅的、简�
 		public function user()
 		{
 			return $this->belongsTo('User', 'custom_key');
+		}
+
+	}
+
+Additionally, you pass a third parameter which specifies the name of the associated column on the parent table:
+
+	class Phone extends Eloquent {
+
+		public function user()
+		{
+			return $this->belongsTo('User', 'custom_key', 'parent_key');
 		}
 
 	}
@@ -423,9 +457,11 @@ Laravel 自带的 Eloquent ORM 为您的数据库提供了一个优雅的、简�
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
-再次，如果您想覆盖默认的外键，可以给 `hasMany` 函数传递第二个参数：
+再次，如果您想覆盖默认的外键，可以给 `hasMany` 函数传递第二个参数。And, like the `hasOne` relation, the local column may also be specified:
 
-	return $this->hasMany('Comment', 'custom_key');
+	return $this->hasMany('Comment', 'foreign_key');
+
+	return $this->hasMany('Comment', 'foreign_key', 'local_key');
 
 在 `Comment` 模型中定义逆向关系，我们使用 `belongsTo` 函数：
 
@@ -778,6 +814,15 @@ Eloquent 允许您通过动态属性访问关系。Eloquent 将为您自动加�
 	User::find(1)->roles()->detach();
 
 注意这个操作并不从 `roles` 删除记录，只从数据透视表中删除。
+
+**Defining A Custom Pivot Model**
+
+Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
+
+	public function newPivot(Model $parent, array $attributes, $table, $exists)
+	{
+		return new YourCustomPivot($parent, $attributes, $table, $exists);
+	}
 
 <a name="collections"></a>
 ## 集合

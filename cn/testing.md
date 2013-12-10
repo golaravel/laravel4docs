@@ -7,6 +7,7 @@
 - [模拟Facades](#mocking-facades)
 - [框架断言](#framework-assertions)
 - [辅助函数](#helper-methods)
+- [Refreshing The Application](#refreshing-the-application)
 
 <a name="introduction"></a>
 ## 简介
@@ -161,6 +162,15 @@ Laravel 提供了一些 `断言（assert）` 函数来让测试更加容易：
 		$this->assertSessionHas('age', $value);
 	}
 
+**Asserting Old Input Has Some Data**
+
+	public function testMethod()
+	{
+		$this->call('GET', '/');
+
+		$this->assertHasOldInput();
+	}
+
 <a name="helper-methods"></a>
 ## 辅助函数
 
@@ -183,3 +193,8 @@ Laravel 提供了一些 `断言（assert）` 函数来让测试更加容易：
 	$this->seed($connection);
 
 如需获取更多关于创建数据填充的信息，请参见文档 [迁移 & 数据填充](/docs/migrations#database-seeding)。
+
+<a name="refreshing-the-application"></a>
+## Refreshing The Application
+
+As you may already know, you can access your Laravel `Application` / IoC Container via `$this->app` from any test method. This Application instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.

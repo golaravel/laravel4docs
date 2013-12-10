@@ -3,7 +3,7 @@
 - [Configuration](#configuration)
 - [Cache Usage](#cache-usage)
 - [Increments & Decrements](#increments-and-decrements)
-- [Cache Sections](#cache-sections)
+- [Cache Tags](#cache-tags)
 - [Database Cache](#database-cache)
 
 <a name="configuration"></a>
@@ -19,6 +19,12 @@ The cache configuration file also contains various other options, which are docu
 **Storing An Item In The Cache**
 
 	Cache::put('key', 'value', $minutes);
+
+**Using Carbon Objects To Set Expire Time**
+
+	$expiresAt = Carbon::now()->addMinutes(10);
+
+	Cache::put('key', 'value', $expiresAt);
 
 **Storing An Item In The Cache If It Doesn't Exist**
 
@@ -82,33 +88,43 @@ All drivers except `file` and `database` support the `increment` and `decrement`
 
 	Cache::decrement('key', $amount);
 
-<a name="cache-sections"></a>
-## Cache Sections
+<a name="cache-tags"></a>
+## Cache Tags
 
-> **Note:** Cache sections are not supported when using the `file` or `database` cache drivers.
+> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
 
-Cache sections allow you to group related items in the cache, and then flush the entire section. To access a section, use the `section` method:
+Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method:
 
-**Accessing A Cache Section**
+**Accessing A Tagged Cache**
 
-	Cache::section('people')->put('John', $john, $minutes);
+You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names.
 
-	Cache::section('people')->put('Anne', $anne, $minutes);
+	Cache::tags('people', 'authors')->put('John', $john, $minutes);
 
-You may also access cached items from the section, as well as use the other cache methods such as `increment` and `decrement`:
+	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
 
-**Accessing Items In A Cache Section**
+You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`:
 
-	$anne = Cache::section('people')->get('Anne');
+**Accessing Items In A Tagged Cache**
 
-Then you may flush all items in the section:
+To access a tagged cache, pass the same ordered list of tags used to save it.
 
-	Cache::section('people')->flush();
+	$anne = Cache::tags('people', 'artists')->get('Anne');
+
+	$john = Cache::tags(array('people', 'authors')->get('John);
+
+You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
+
+	Cache::tags('people', 'authors')->flush();
+
+In contrast, this statement would remove only caches tagged with 'author', so "John" would be removed, but not "Anne".
+
+	Cache::tags('authors')->flush();
 
 <a name="database-cache"></a>
 ## Database Cache
 
-When using the `database` cache driver, you will need to setup a table to contain the cache items. Below is an example `Schema` declaration for the table:
+When using the `database` cache driver, you will need to setup a table to contain the cache items. You'll find an example `Schema` declaration for the table below:
 
 	Schema::create('cache', function($table)
 	{

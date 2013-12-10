@@ -49,6 +49,22 @@ Laravel的队列组件为许多队列服务提供了统一的API接口。队列�
 
 	Queue::push('SendEmail@send', array('message' => $message));
 
+If you need to pass the same data to several queue jobs, you may use the `Queue::bulk` method:
+
+**Passing The Same Payload To Multiple Jobs**
+
+	Queue::bulk(array('SendEmail', 'NotifyUser'), $payload);
+
+Sometimes you may wish to delay the execute of a queued job. For instance, you may wish to queue a job that sends a customer an e-mail 15 minutes after sign-up. You can accomplish this using the `Queue::later` method:
+
+**Delaying The Execution Of A Job**
+
+	$date = Carbon::now()->addMinutes(15);
+
+	Queue::later($date, 'SendEmail@send', array('message' => $message));
+
+In this example, we're using the [Carbon](https://github.com/briannesbitt/Carbon) date library to specify the delay we wish to assign to the job. Alternatively, you may pass the number of seconds you wish to delay as an integer.
+
 一旦你处理完了一个任务，必须从队列中将它删除，可以通过 `Job` 实例中的 `delete` 方法完成这项工作：
 
 **删除一个处理完的任务**
@@ -123,19 +139,31 @@ Laravel包含了一个用于运行已推送到队列的任务的Artisan服务。
 
 注意一旦任务启动，它会一直运行除非你手动停止它。可以使用进程监视工具（例如 [Supervisor](http://supervisord.org/)）来确保队列监听器处于运行状态。
 
-你也可以设置单个任务可以执行的最长时间（单位秒）：
+You may pass a comma-delimited list of queue connections to the `listen` command to set queue priorities:
+
+	php artisan queue:listen high-connection,low-connection
+
+In this example, jobs on the `high-connection` will always be processed before moving onto jobs from the `low-connection`.
 
 **设置任务的超时参数**
 
+You may also set the length of time (in seconds) each job should be allowed to run:
+
 	php artisan queue:listen --timeout=60
+
+**Specifying Queue Sleep Duration**
 
 另外，你还可以指定新任务轮询之前所需要等待的秒数：
 
 	php artisan queue:listen --sleep=5
 
+Note that the queue only "sleeps" if no jobs are on the queue. If more jobs are available, the queue will continue to work them without sleeping.
+
 如果只想处理队列的第一个任务，你可以使用 `queue:work` 命令：
 
 **处理队列的第一个任务**
+
+To process only the first job on the queue, you may use the `queue:work` command:
 
 	php artisan queue:work
 

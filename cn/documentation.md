@@ -12,6 +12,7 @@
     - [控制器](/docs/controllers)
     - [错误 & 日志](/docs/errors)
 - 深度历险
+    - [Authentication](/docs/security)
     - [缓存](/docs/cache)
     - [核心扩展](/docs/extending)
     - [事件](/docs/events)
@@ -26,6 +27,7 @@
     - [队列](/docs/queues)
     - [安全](/docs/security)
     - [Session](/docs/session)
+    - [SSH](/docs/ssh)
     - [模版](/docs/templates)
     - [单元测试](/docs/testing)
     - [验证](/docs/validation)

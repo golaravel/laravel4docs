@@ -37,14 +37,18 @@
 
 	Route::get('foo', 'Namespace\FooController@method');
 
+> **Note:** Since we're using [Composer](http://getcomposer.org) to auto-load our PHP classes, controllers may live anywhere on the file system, as long as composer knows how to load them. The controller directory does not enforce any folder structure for your application. Routing to controllers is entirely de-coupled from the file system.
+
 你也可以在控制器路由中指定名称：
 
 	Route::get('foo', array('uses' => 'FooController@method',
 											'as' => 'name'));
 
-你可以使用 `URL::action` 方法获取一个控制器操作的链接：
+你可以使用 `URL::action` 方法或`action`快捷方法获取一个控制器操作的URL：
 
 	$url = URL::action('FooController@method');
+
+	$url = action('FooController@method');
 
 你可以使用 `currentRouteAction` 方法获取当前控制器操作的名称：
 

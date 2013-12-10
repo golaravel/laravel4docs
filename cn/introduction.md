@@ -1,8 +1,22 @@
 # 简介
 
+- [从哪里开始](#where-to-start)
 - [Laravel哲学](#laravel-philosophy)
-- [学习Laravel](#learning-laravel)
+- [额外的学习资源](#additional-resources)
 - [研发小组](#development-team)
+
+<a name="where-to-start"></a>
+## 从哪里开始
+
+Learning a new framework can be daunting, but it's also exciting. To smooth your transition, we've attempted to create very clear, concise documentation for Laravel. Here are some recommendations for what to read first:
+
+- [Installation](/docs/installation) and [configuration](/docs/configuration).
+- [Routing](/docs/routing)
+- [Requests & Input](/docs/requests)
+- [Views & Responses](/docs/responses)
+- [Controllers](/docs/controllers)
+
+After reading through these documents, you should have a good grasp on basic request / response handling in Laravel. Next, you may wish to read about [configuring your database](/docs/database), the [fluent query builder](/docs/queries), and the [Eloquent ORM](/docs/eloquent). Or, you may wish to read about [authentication and security](/docs/security) so you can start signing people into your application.
 
 <a name="laravel-philosophy"></a>
 ## Laravel哲学
@@ -13,8 +27,8 @@ Laravel的目标是给开发者创造一个愉快的开发过程，并且不牺�
 
 Laravel是易于理解并且强大的，它提供了强大的工具用以开发大型、健壮的应用。杰出的IoC、数据库迁移工具和紧密集成的单元测试支持，这些工具赋予你构建任何应用的能力。
 
-<a name="learning-laravel"></a>
-## 学习Laravel
+<a name="additional-resources"></a>
+## 额外的学习资源
 
 一个最好的学习Laravel的途径就是通读整个文档。你现在所看到的这份指南详述了框架的所有方面，还告诉你如何在你的应用中使用Laravel。
 

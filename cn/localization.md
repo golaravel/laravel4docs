@@ -5,6 +5,7 @@
 - [基本用例](#basic-usage)
 - [复数形式](#pluralization)
 - [验证消息的本地化](#validation)
+- [Overriding Package Language Files](#overriding-package-language-files)
 
 <a name="introduction"></a>
 ## 简介
@@ -87,3 +88,8 @@ Laravel `Lang` 类提供非常方便的方法来从不同语言文件中取得�
 ## 验证
 
 对于验证功能中需要本地化的错误信息和提示信息，请参阅 <a href="/docs/validation#localization">相关文档</a>。
+
+<a name="overriding-package-language-files"></a>
+## Overriding Package Language Files
+
+Many packages ship with their own language lines. Instead of hacking the package's core files to tweak these lines, you may override them by placing files in the `app/lang/packages/{locale}` directory. So, for example, if you need to override the English language lines for a package named `skyrim/hearthfire`, you would place a language file at: `app/lang/packages/en/skyrim/hearthfire.php`. In this file you would define only the language lines you wish to override. Any language lines you don't override will still be loaded from the package's language files.
