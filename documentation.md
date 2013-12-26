@@ -12,7 +12,6 @@
     - [Controllers](/docs/controllers)
     - [Errors & Logging](/docs/errors)
 - Learning More
-    - [Authentication](/docs/security)
     - [Cache](/docs/cache)
     - [Core Extension](/docs/extending)
     - [Events](/docs/events)
@@ -27,7 +26,6 @@
     - [Queues](/docs/queues)
     - [Security](/docs/security)
     - [Session](/docs/session)
-    - [SSH](/docs/ssh)
     - [Templates](/docs/templates)
     - [Unit Testing](/docs/testing)
     - [Validation](/docs/validation)

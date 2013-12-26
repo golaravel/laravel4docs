@@ -3,7 +3,7 @@
 - [配置](#configuration)
 - [缓存用法](#cache-usage)
 - [增加 & 减少](#increments-and-decrements)
-- [Cache Tags](#cache-tags)
+- [缓存区](#cache-sections)
 - [数据库缓存](#database-cache)
 
 <a name="configuration"></a>
@@ -19,12 +19,6 @@ Laravel 对不同的缓存机制提供了一套统一的API。缓存配置信息
 **将某一数据存入缓存**
 
 	Cache::put('key', 'value', $minutes);
-
-**Using Carbon Objects To Set Expire Time**
-
-	$expiresAt = Carbon::now()->addMinutes(10);
-
-	Cache::put('key', 'value', $expiresAt);
 
 **当某一数据不在缓存中是才将其保存**
 
@@ -88,43 +82,33 @@ Laravel 对不同的缓存机制提供了一套统一的API。缓存配置信息
 
 	Cache::decrement('key', $amount);
 
-<a name="cache-tags"></a>
-## Cache Tags
+<a name="cache-sections"></a>
+## 缓存区
 
-> **Note:** Cache tags are not supported when using the `file` or `database` cache drivers. Furthermore, when using multiple tags with caches that are stored "forever", performance will be best with a driver such as `memcached`, which automatically purges stale records.
+> **注意：** `文件`或`数据库`缓存驱动都不支持缓存区。
 
-Cache tags allow you to tag related items in the cache, and then flush all caches tagged with a given name. To access a tagged cache, use the `tags` method:
+缓存区允许你将相关数据项分组存放，然后可以对整个区进行清空操作。要想访问缓存区，需要使用`section`方法：
 
-**Accessing A Tagged Cache**
+**访问缓存区**
 
-You may store a tagged cache by passing in an ordered list of tag names as arguments, or as an ordered array of tag names.
+	Cache::section('people')->put('John', $john, $minutes);
 
-	Cache::tags('people', 'authors')->put('John', $john, $minutes);
+	Cache::section('people')->put('Anne', $anne, $minutes);
 
-	Cache::tags(array('people', 'artists'))->put('Anne', $anne, $minutes);
+你也可以从缓存区中取得缓存项，也可以使用其他的缓存方法，例如`increment`和`decrement`：
 
-You may use any cache storage method in combination with tags, including `remember`, `forever`, and `rememberForever`. You may also access cached items from the tagged cache, as well as use the other cache methods such as `increment` and `decrement`:
+**从缓存区中取得数据项**
 
-**Accessing Items In A Tagged Cache**
+	$anne = Cache::section('people')->get('Anne');
 
-To access a tagged cache, pass the same ordered list of tags used to save it.
+你可以使用flush方法清空整个缓存区：
 
-	$anne = Cache::tags('people', 'artists')->get('Anne');
-
-	$john = Cache::tags(array('people', 'authors')->get('John);
-
-You may flush all items tagged with a name or list of names. For example, this statement would remove all caches tagged with either `people`, `authors`, or both. So, both "Anne" and "John" would be removed from the cache:
-
-	Cache::tags('people', 'authors')->flush();
-
-In contrast, this statement would remove only caches tagged with 'author', so "John" would be removed, but not "Anne".
-
-	Cache::tags('authors')->flush();
+	Cache::section('people')->flush();
 
 <a name="database-cache"></a>
 ## 数据库缓存
 
-当使用`数据库`缓存驱动时，你需要设置一个数据表来缓存数据。以下案例是`Schema`表的定义：
+当使用`数据库`缓存驱动时，你需要设置一个数据表来缓存数据。以下是表`Schema`定义案例：
 
 	Schema::create('cache', function($table)
 	{

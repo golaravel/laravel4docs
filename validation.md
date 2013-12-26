@@ -30,7 +30,7 @@ Multiple rules may be delimited using either a "pipe" character, or as separate 
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
-
+	
 **Validating Multiple Fields**
 
     $validator = Validator::make(
@@ -155,8 +155,6 @@ Below is a list of all available validation rules and their function:
 - [Date](#rule-date)
 - [Date Format](#rule-date-format)
 - [Different](#rule-different)
-- [Digits](#rule-digits)
-- [Digits Between](#rule-digitsbetween)
 - [E-Mail](#rule-email)
 - [Exists (Database)](#rule-exists)
 - [Image (File)](#rule-image)
@@ -238,16 +236,6 @@ The field under validation must match the _format_ defined according to the `dat
 
 The given _field_ must be different than the field under validation.
 
-<a name="rule-digits"></a>
-#### digits:_value_
-
-The field under validation must be _numeric_ and must have an exact length of _value_.
-
-<a name="rule-digitsbetween"></a>
-#### digitsbetween:_min_,_max_
-
-The field under validation must have a length between the given _min_ and _max_.
-
 <a name="rule-email"></a>
 #### email
 
@@ -269,10 +257,6 @@ The field under validation must exist on a given database table.
 You may also specify more conditions that will be added as "where" clauses to the query:
 
 	'email' => 'exists:staff,email,account_id,1'
-
-Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
-
-	'email' => 'exists:staff,email,deleted_at,NULL'
 
 <a name="rule-image"></a>
 #### image

@@ -7,7 +7,6 @@
 - [Mocking Facades](#mocking-facades)
 - [Framework Assertions](#framework-assertions)
 - [Helper Methods](#helper-methods)
-- [Refreshing The Application](#refreshing-the-application)
 
 <a name="introduction"></a>
 ## Introduction
@@ -159,15 +158,6 @@ Laravel ships with several `assert` methods to make testing a little easier:
 		$this->assertSessionHas('age', $value);
 	}
 
-**Asserting Old Input Has Some Data**
-
-	public function testMethod()
-	{
-		$this->call('GET', '/');
-
-		$this->assertHasOldInput();
-	}
-
 <a name="helper-methods"></a>
 ## Helper Methods
 
@@ -190,8 +180,3 @@ You may re-seed your database from a test using the `seed` method:
 	$this->seed($connection);
 
 More information on creating seeds may be found in the [migrations and seeding](/docs/migrations#database-seeding) section of the documentation.
-
-<a name="refreshing-the-application"></a>
-## Refreshing The Application
-
-As you may already know, you can access your Laravel `Application` / IoC Container via `$this->app` from any test method. This Application instance is refreshed for each test class. If you wish to manually force the Application to be refreshed for a given method, you may use the `refreshApplication` method from your test method. This will reset any extra bindings, such as mocks, that have been placed in the IoC container since the test case started running.

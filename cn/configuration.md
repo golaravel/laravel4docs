@@ -58,7 +58,7 @@
 
  在此案例中，'local' 是运行环境的名称，'your-machine-name' 是服务器的主机名。在Linux和Mac上，可以通过 `hostname` 命令来确定所用机器的主机名。
 
-如果你需要更灵活的环境检查方式，可以在调用`detectEnvironment`时传递一个`闭包（Closure）` ， 这样你就可以按照自己的方式检查环境了：
+你还可以在调用`detectEnvironment`时传递一个`闭包（Closure）` ， 这样你就可以自己检查环境：
 
 	$env = $app->detectEnvironment(function()
 	{
@@ -71,22 +71,10 @@
 
 	$environment = App::environment();
 
-You may also pass arguments to the `environment` method to check if the environment matches a given value:
-
-	if (App::environment('local'))
-	{
-		// The environment is local
-	}
-
-	if (App::environment('local', 'staging'))
-	{
-		// The environment is either local OR staging...
-	}
-
 <a name="maintenance-mode"></a>
 ## 维护模式
 
-当应用处于维护模式时，所有的路由都会指向一个自定义的视图。这对于更新应用或执行维护任务时临时"禁用"当前应用是很方便的。`App::down`方法在`app/start/global.php`文件里进行了定义，它将在维护模式时将该方法输出的内容展示给用户。  
+当应用处于维护模式时，所有的路由都会指向一个自定义的视图。这对于更新应用时做临时"禁用"很方便。`App::down`方法在`app/start/global.php`文件里进行了定义，它将在维护模式时将该方法输出的内容展示给用户。  
 
 要开启维护模式，只需执行Artisan 的 `down`命令：
 
@@ -102,12 +90,5 @@ You may also pass arguments to the `environment` method to check if the environm
 	{
 		return Response::view('maintenance', array(), 503);
 	});
-
-
-If the Closure passed to the `down` method returns `NULL`, maintenace mode will be ignored for that request.
-
-### Maintenance Mode & Queues
-
-While your application is in maintenance mode, no [queue jobs](/docs/queues) will be handled. The jobs will continue to be handled as normal once the application is out of maintenance mode.
 
 译者：王赛  [（Bootstrap中文网）](http://www.bootcss.com)

@@ -3,7 +3,6 @@
 - [配置](#configuration)
 - [基本用法](#usage)
 - [给分页链接添加自定义信息](#appending-to-pagination-links)
-- [Converting To JSON](#converting-to-json)
 
 <a name="configuration"></a>
 ## 配置
@@ -41,10 +40,6 @@ Laravel有多种方式实现分页. 最简单的是在普通查询或Eloquent模
 
 以上就是创建一个分页链接的所需的所有信息了! 我们还没有提到Laravel做了什么. Laravel会自己把其它的事情做完.
 
-If you would like to specify a custom view to use for pagination, you may pass a view to the `links` method:
-
-	<?php echo $users->links('view.name'); ?>
-
 你也可以通过下面的方法获取关于分页更加详尽的信息:
 
 - `getCurrentPage`
@@ -71,8 +66,3 @@ If you would like to specify a custom view to use for pagination, you may pass a
 最后产生的url如下:
 
 	http://example.com/something?page=2&sort=votes
-
-<a name="converting-to-json"></a>
-## Converting To JSON
-
-The `Paginator` class implements the `Illuminate\Support\Contracts\JsonableInterface` contract and exposes the `toJson` method. You can may also convert a `Paginator` instance to JSON by returning it from a route. The JSON'd form of the instance will include some "meta" information such as `total`, `current_page`, `last_page`, `from`, and `to`. The instance's data will be available via the `data` key in the JSON array.

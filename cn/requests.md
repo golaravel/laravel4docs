@@ -173,12 +173,3 @@ If you would like to set a cookie before a response has been created, use the `C
 	{
 		//
 	}
-
-**Checking The Requested Response Format**
-
-The `Request::format` method will return the requested response format based on the HTTP Accept header:
-
-	if (Request::format() == 'json')
-	{
-		//
-	}

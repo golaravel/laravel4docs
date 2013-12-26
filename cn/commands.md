@@ -25,14 +25,6 @@
 
 	php artisan command:make FooCommand --path=app/classes --namespace=Classes
 
-When creating the command, the `--command` option may be used to assign the terminal command name:
-
-	php artisan command:make AssignUsers --command=users:assign
-
-If you need to create a command for a [workbench package](/docs/packages), use the `--bench` switch:
-
-	php artisan command:make AssignUsers --bench="vendor/package"
-
 ### 实现命令
 
 一旦命令被生成，你应当填写这个类的 `name` 和 `description` 属性，这些属性将在展示命令的 `list` 页面显示出来。

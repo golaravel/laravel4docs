@@ -31,7 +31,7 @@ Laravel 自带一个简单、方便的 `Validation` 类用于验证数据以及�
 		array('name' => 'Dayle'),
 		array('name' => array('required', 'min:5'))
 	);
-
+	
 **验证多个字段**
 
     $validator = Validator::make(
@@ -270,10 +270,6 @@ The field under validation must have a length between the given _min_ and _max_.
 你也可以指定更多的条件，将以 "where" 的形式添加到查询。
 
 	'email' => 'exists:staff,email,account_id,1'
-
-Passing `NULL` as a "where" clause value will add a check for a `NULL` database value:
-
-	'email' => 'exists:staff,email,deleted_at,NULL'
 
 <a name="rule-image"></a>
 #### image

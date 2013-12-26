@@ -96,20 +96,6 @@ If you are unable to generate the query you need via the fluent interface, feel 
 
 	$users = User::whereRaw('age > ? and votes = 100', array(25))->get();
 
-**Chunking Results**
-
-If you need to process a lot (thousands) of Eloquent records, using the `chunk` command will allow you to do without eating all of your RAM:
-
-	User::chunk(200, function($users)
-	{
-		foreach ($users as $user)
-		{
-			//
-		}
-	});
-
-The first argument passed to the method is the number of records you wish to receive per "chunk". The Closure passed as the second argument will be called for each chunk that is pulled from the database.
-
 **Specifying The Query Connection**
 
 You may also specify which database connection should be used when running an Eloquent query. Simply use the `on` method:
@@ -182,14 +168,7 @@ After saving or creating a new model that uses auto-incrementing IDs, you may re
 
 **Using The Model Create Method**
 
-	// Create a new user in the database...
 	$user = User::create(array('name' => 'John'));
-
-	// Retrieve the user by the attributes, or create it if it doesn't exist...
-	$user = User::firstOrCreate(array('name' => 'John'));
-
-	// Retrieve the user by the attributes, or instantiate a new instance...
-	$user = User::firstOrNew(array('name' => 'John'));
 
 To update a model, you may retrieve it, change an attribute, and use the `save` method:
 
@@ -395,11 +374,9 @@ The SQL performed by this statement will be as follows:
 
 	select * from phones where user_id = 1
 
-Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method. Furthermore, you may pass a third argument to the method to specify which local column that should be used for the association:
+Take note that Eloquent assumes the foreign key of the relationship based on the model name. In this case, `Phone` model is assumed to use a `user_id` foreign key. If you wish to override this convention, you may pass a second argument to the `hasOne` method:
 
-	return $this->hasOne('Phone', 'foreign_key');
-
-	return $this->hasOne('Phone', 'foreign_key', 'local_key');
+	return $this->hasOne('Phone', 'custom_key');
 
 To define the inverse of the relationship on the `Phone` model, we use the `belongsTo` method:
 
@@ -421,17 +398,6 @@ In the example above, Eloquent will look for a `user_id` column on the `phones` 
 		public function user()
 		{
 			return $this->belongsTo('User', 'custom_key');
-		}
-
-	}
-
-Additionally, you pass a third parameter which specifies the name of the associated column on the parent table:
-
-	class Phone extends Eloquent {
-
-		public function user()
-		{
-			return $this->belongsTo('User', 'custom_key', 'parent_key');
 		}
 
 	}
@@ -458,11 +424,9 @@ If you need to add further constraints to which comments are retrieved, you may 
 
 	$comments = Post::find(1)->comments()->where('title', '=', 'foo')->first();
 
-Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method. And, like the `hasOne` relation, the local column may also be specified:
+Again, you may override the conventional foreign key by passing a second argument to the `hasMany` method:
 
-	return $this->hasMany('Comment', 'foreign_key');
-
-	return $this->hasMany('Comment', 'foreign_key', 'local_key');
+	return $this->hasMany('Comment', 'custom_key');
 
 To define the inverse of the relationship on the `Comment` model, we use the `belongsTo` method:
 
@@ -816,15 +780,6 @@ To delete all records on the pivot table for a model, you may use the `detach` m
 
 Note that this operation does not delete records from the `roles` table, but only from the pivot table.
 
-**Defining A Custom Pivot Model**
-
-Laravel also allows you to define a custom Pivot model. To define a custom model, first create your own "Base" model class that extends `Eloquent`. In your other Eloquent models, extend this custom base model instead of the default `Eloquent` base. In your base model, add the following function that returns an instance of your custom Pivot model:
-
-	public function newPivot(Model $parent, array $attributes, $table, $exists)
-	{
-		return new YourCustomPivot($parent, $attributes, $table, $exists);
-	}
-
 <a name="collections"></a>
 ## Collections
 
@@ -864,7 +819,7 @@ Eloquent collections also contain a few helpful methods for looping and filterin
 
 When filtering collections, the callback provided will be used as callback for [array_filter](http://php.net/manual/en/function.array-filter.php).
 
-	$users = $users->filter(function($user)
+	$users = $user->filter(function($user)
 	{
 		if($user->isAdmin())
 		{

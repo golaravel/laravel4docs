@@ -3,7 +3,6 @@
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Appending To Pagination Links](#appending-to-pagination-links)
-- [Converting To JSON](#converting-to-json)
 
 <a name="configuration"></a>
 ## Configuration
@@ -41,10 +40,6 @@ The argument passed to the `paginate` method is the number of items you wish to 
 
 This is all it takes to create a pagination system! Note that we did not have to inform the framework of the current page. Laravel will determine this for you automatically.
 
-If you would like to specify a custom view to use for pagination, you may pass a view to the `links` method:
-
-	<?php echo $users->links('view.name'); ?>
-
 You may also access additional pagination information via the following methods:
 
 - `getCurrentPage`
@@ -81,8 +76,3 @@ You can add to the query string of pagination links using the `appends` method o
 This will generate URLs that look something like this:
 
 	http://example.com/something?page=2&sort=votes
-
-<a name="converting-to-json"></a>
-## Converting To JSON
-
-The `Paginator` class implements the `Illuminate\Support\Contracts\JsonableInterface` contract and exposes the `toJson` method. You can may also convert a `Paginator` instance to JSON by returning it from a route. The JSON'd form of the instance will include some "meta" information such as `total`, `current_page`, `last_page`, `from`, and `to`. The instance's data will be available via the `data` key in the JSON array.

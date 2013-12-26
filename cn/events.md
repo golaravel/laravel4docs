@@ -1,7 +1,6 @@
 # 事件
 
 - [基本用法](#basic-usage)
-- [在哪儿注册事件](#where-to-register)
 - [利用通配符匹配多个事件](#wildcard-listeners)
 - [使用类作为监听器](#using-classes-as-listeners)
 - [事件队列](#queued-events)
@@ -44,13 +43,6 @@ Laravel中的`Event`类实现了简单的观察者模式，允许你在应用程
 		return false;
 	});
 
-<a name="where-to-register"></a>
-## 在哪儿注册事件
-
-So, you know how to register events, but you may be wondering _where_ to register them. Don't worry, this is a common question. Unfortunately, it's a hard question to answer because you can register an event almost anywhere! But, here are some tips. Again, like most other bootstrapping code, you may register events in one of your `start` files such as `app/start/global.php`.
-
-If your `start` files are getting too crowded, you could create a separate `app/events.php` file that is included from a `start` file. This is a simple solution that keeps your event registration cleanly separated from the rest of your bootstrapping. If you prefer a class based approach, you may register your events in a [service provider](/docs/ioc#service-providers). Since none of these approaches is inherently "correct", choose an approach you feel comfortable with based on the size of your application.
-
 <a name="wildcard-listeners"></a>
 ## 利用通配符匹配多个事件
 
@@ -58,22 +50,12 @@ If your `start` files are getting too crowded, you could create a separate `app/
 
 **注册多个事件的监听器**
 
-	Event::listen('foo.*', function($param)
+	Event::listen('foo.*', function($param, $event)
 	{
 		// Handle the event...
 	});
 
-该监听器将会处理所有以`foo.`开始的事件。
-
-You may use the `Event::fired` method to determine exactly which event was fired:
-
-	Event::listen('foo.*', function($param)
-	{
-		if (Event::firing() == 'foo.bar')
-		{
-			//
-		}
-	});
+该监听器将会处理所有以`foo.`开始的事件。注意：完整的事件名将以事件处理器的最后一个参数传入。
 
 <a name="using-classes-as-listeners"></a>
 ## 使用类作为监听器

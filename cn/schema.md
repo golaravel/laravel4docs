@@ -60,32 +60,30 @@ Laravel 的 `Schema` 类提供了一种与数据库无关的方式维护表。�
 
 命令  | 描述
 ------------- | -------------
-`$table->bigIncrements('id');`  |  Incrementing ID using a "big integer" equivalent.
-`$table->bigInteger('votes');`  |  BIGINT equivalent to the table
-`$table->binary('data');`  |  BLOB equivalent to the table
-`$table->boolean('confirmed');`  |  BOOLEAN equivalent to the table
-`$table->date('created_at');`  |  DATE equivalent to the table
-`$table->dateTime('created_at');`  |  DATETIME equivalent to the table
-`$table->decimal('amount', 5, 2);`  |  DECIMAL equivalent with a precision and scale
-`$table->double('column', 15, 8);`  |  DOUBLE equivalent with precision
-`$table->enum('choices', array('foo', 'bar'));` | ENUM equivalent to the table
-`$table->float('amount');`  |  FLOAT equivalent to the table
-`$table->increments('id');`  |  Incrementing ID to the table (primary key).
-`$table->integer('votes');`  |  INTEGER equivalent to the table
-`$table->longText('description');`  |  LONGTEXT equivalent to the table
-`$table->mediumText('description');`  |  MEDIUMTEXT equivalent to the table
-`$table->morphs('taggable');`  |  Adds INTEGER `taggable_id` and STRING `taggable_type`
-`$table->smallInteger('votes');`  |  SMALLINT equivalent to the table
-`$table->softDeletes();`  |  Adds **deleted\_at** column for soft deletes
-`$table->string('email');`  |  VARCHAR equivalent column
-`$table->string('name', 100);`  |  VARCHAR equivalent with a length
-`$table->text('description');`  |  TEXT equivalent to the table
-`$table->time('sunrise');`  |  TIME equivalent to the table
-`$table->timestamp('added_on');`  |  TIMESTAMP equivalent to the table
-`$table->timestamps();`  |  Adds **created\_at** and **updated\_at** columns
-`->nullable()`  |  Designate that the column allows NULL values
-`->default($value)`  |  Declare a default value for a column
-`->unsigned()`  |  Set INTEGER to UNSIGNED
+`$table->increments('id');`  |  自动增长的 ID (主键).
+`$table->bigIncrements('id');`  |  类似"big integer"类型的自动增长的 ID. 
+`$table->string('email');`  |  VARCHAR 类型 
+`$table->string('name', 100);`  |  带长度的 VARCHAR 类型
+`$table->integer('votes');`  |  INTEGER 类型
+`$table->bigInteger('votes');`  |  BIGINT 类型
+`$table->smallInteger('votes');`  |  SMALLINT 类型
+`$table->float('amount');`  |  FLOAT 类型
+`$table->double('column', 15, 8);`  |  设置了精度的DOUBLE类型
+`$table->decimal('amount', 5, 2);`  |  带精度和小数的 DECIMAL 
+`$table->boolean('confirmed');`  |  BOOLEAN 类型
+`$table->date('created_at');`  |  DATE 类型
+`$table->dateTime('created_at');`  |  DATETIME 类型
+`$table->time('sunrise');`  |  TIME 类型
+`$table->timestamp('added_on');`  |  TIMESTAMP 类型
+`$table->timestamps();`  |  添加 **created\_at** 和 **updated\_at** 列
+`$table->softDeletes();`  |  添加 **deleted\_at** 列用于软删除
+`$table->text('description');`  |  TEXT 类型
+`$table->longtext('description');`  |  LONGTEXT 类型
+`$table->binary('data');`  |  BLOB 类型
+`$table->enum('choices', array('foo', 'bar'));` | ENUM 类型
+`->nullable()`  |  指明该字段允许 NULL 值
+`->default($value)`  |  为字段声明一个默认值
+`->unsigned()`  |  设置 INTEGER 为无符号
 
 如果你使用 MySQL 数据库，您可以使用 `after` 函数指明字段的顺序：
 

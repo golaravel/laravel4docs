@@ -75,14 +75,6 @@ Laravel `Hash` 类提供了可靠的<a href='http://en.wikipedia.org/wiki/Bcrypt
 
 **注意：** 如果 `attempt` 方法返回 `true`， 用户就已经成功登陆应用程序了。
 
-**Determining If User Authed Via Remember**
-If you are "remembering" user logins, you may use the `viaRemember` method to determine if the user was authenticated using the "remember me" cookie:
-
-	if (Auth::viaRemember())
-	{
-		//
-	}
-
 你也可以在用户验证查询中加入其它条件：
 
 **指定其它条件验证用户**

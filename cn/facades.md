@@ -24,7 +24,6 @@ Facades 提供了一个“静态”接口到 [IoC 容器](/docs/ioc) 类 。Lara
 
 你的 facade 类只需要实现一个方法： `getFacadeAccesor` 。 `getFacadeAccessor` 方法的工作是定义如何从容器中取得对象。 `Facades` 基类构建了 `__callStatic()` 魔术方法来从 facade 延迟访问取得对象。
 
-So, when you make a facade call like `Cache::get`, Laravel resolves the Cache manager class out of the IoC container and calls the `get` method on the class. In technical terms, Laravel Facades are a convenient syntax for using the Laravel IoC container as a service locator.
 
 <a name="practical-usage"></a>
 ## 实际用例
@@ -77,8 +76,6 @@ Cache 类继承基本 `Facade` 类，并且定义了个 `getFacadeAccessor()` �
 		}
 
 	}
-
-This class might live in your `app/models` directory, or any other directory that Composer knows how to auto-load.
 	
 我们需要能够在 IoC 容器中取得该类。所以，让我们增加一个绑定：
 

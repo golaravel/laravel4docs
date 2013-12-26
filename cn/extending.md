@@ -2,7 +2,6 @@
 
 - [介绍](#introduction)
 - [管理者 & 工厂](#managers-and-factories)
-- [Where To Extend](#where-to-extend)
 - [缓存](#cache)
 - [Session会话](#session)
 - [用户验证](#authentication)
@@ -28,10 +27,6 @@ Laravel 有几个 "Manager" 类 ，用来管理一些基本驱动组件的创建
 > **注意:**
 花一些时间来探索Laravel中各种不同的"Manager"类，例如，"CacheManager"以及"SessionManager"。通过阅读这些类，可以让你对Laravel的底层实现有一个更加彻底的了解。 所有的"Manager"类都继承了"Illuminate\Support\Manager"基类， 这个基类为每一个"Manager"类提供了一些有用的，常见的功能。
  
-<a name="where-to-extend"></a>
-## Where To Extend
-
-This documentation covers how to extend a variety of Laravel's components, but you may be wondering where to place your extension code. Like most other bootstrapping code, you are free to place some extensions in your `start` files. Cache and Auth extensions are good candidates for this approach. Other extensions, like `Session`, must be placed in the `register` mehtod of a service provider since they are needed very early in the request life-cycle.
 
 <a name="cache"></a>
 ## 缓存
@@ -88,12 +83,6 @@ This documentation covers how to extend a variety of Laravel's components, but y
 		// Return implementation of SessionHandlerInterface
 	});
 
-### Where To Extend The Session
-
-Session extensions need to be registered differently than other extensions like Cache and Auth. Since sessions are started very early in the request-lifecycle, registering the extensions in a `start` file will happen be too late. Instead, a [service provider](/docs/ioc#service-providers) will be needed. You should place your session extension code in the `register` method of your service provider, and the provider should be placed **below** the default `Illuminate\Session\SessionServiceProvider` in the `providers` configuration array.
-
-### Writing The Session Extension
-
 请注意，定制的缓存驱动需要实现"SessionHandlerInterface"接口。这个接口包含在在PHP5.4+core中。如果你正在使用PHP5.3，Laravel会帮你定义这个接口，这使得你的系统可以向前兼容。我们只需要实现这个接口中的一些简单的方法。 下面是一个简化的MongoDB实现:
 
 	class MongoHandler implements SessionHandlerInterface {
@@ -105,7 +94,7 @@ Session extensions need to be registered differently than other extensions like 
 		public function destroy($sessionId) {}
 		public function gc($lifetime) {}
 
-	}
+	}	
 
 上面这些方法不像在"StoreInterface"缓存接口中的方法一样让人容易理解。下面让我们快速的了解一下每一个方法的功能:
 
@@ -153,7 +142,7 @@ session驱动成功注册后，我们就可以使用"app/config/session.php"配�
 
 "retrieveById"方法通常接收一个代表用户的数字形式的键，例如在MySQL数据库中自增的ID字段值。"UserInterface"实现会通过这个方法来比对接收和返回的ID。
 
-"retrieveByCredentials"方法接收在试图登录应用程序时传入"Auth:attempt"方法的一个认证信息数组。然后，"retrieveByCredentials"方法会从底层的持久化存储系统中查询与传入身份信息相符合的用户。通常情况下，"retrieveByCredentials"方法会根据"$credentials['username']"来设定"where"条件来进行查询。
+"retrieveByCredentials"方法接收在试图登录应用程序时传入"Auth:attempt"方法的一个认证信息数组。然后，"retrieveByCredentials"方法会从底层的持久化存储系统中查询与传入身份信息相符合的用户。通常情况下，"retrieveByCredentials"方法会根据"$credentails['username']"来设定"where"条件来进行查询。
  **"retrieveByCredentials"方法不应该试图做任何密码的确认和验证操作。**
 
 "validateCredentials" 方法会将传入的"$user"用户和"$credentials"身份信息进行对比并验证这个用户。例如，这个方法会将"$user->getAuthPassword()"返回的字符串和经过"Hash::make"方法哈希处理的"$credentials['password']"进行对比。

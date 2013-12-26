@@ -18,10 +18,12 @@ Laravel框架使用 [Composer](http://getcomposer.org) 执行安装和依赖管�
 
 或者，你可以从 [Github仓库](https://github.com/laravel/laravel/archive/master.zip) 下载。接下来，在 [安装Composer](http://getcomposer.org) 之后，在项目根目录下执行 `composer install` 命令。该命令将会下载以及安装框架的依赖组件。
 
+<a name="permissions"></a>
 ### 写入权限
 
-安装完 Laravel ，你还需要为web服务器设置 `app/storage` 目录的写入权限。请参考 [安装](/docs/installation) 一节以获取更多关于配置方面的信息。
+安装完 Laravel ，你还需要为web服务器设置 `app/storage` 目录的写入权限。请参考 [安装](/docs/artisan) 一节以获取更多关于配置方面的信息。
 
+<a name="directories"></a>
 ### 目录结构
 
 安装完框架后，你需要熟悉一下该项目的目录结构。`app` 文件夹包含了一些例如 `views` ，`controllers` 和 `models` 目录。 程序中大部分代码将要存放这些目录下。你也可以查看一下 `app/config` 文件夹里一些配置项目。

@@ -79,11 +79,6 @@ lists方法返回一个包含所有roles表的title字段的值的数组. 可以
 	$users = DB::table('users')
 	                    ->whereBetween('votes', array(1, 100))->get();
 
-**Using Where Not Between**
-
-	$users = DB::table('users')
-	                    ->whereNotBetween('votes', array(1, 100))->get();
-
 **在Where语句中使用In子句，In的内容通过数组传递**
 
 	$users = DB::table('users')

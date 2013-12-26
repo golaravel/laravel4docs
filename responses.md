@@ -5,7 +5,6 @@
 - [Views](#views)
 - [View Composers](#view-composers)
 - [Special Responses](#special-responses)
-- [Response Macros](#response-macros)
 
 <a name="basic-responses"></a>
 ## Basic Responses
@@ -27,10 +26,6 @@ A `Response` instance inherits from the `Symfony\Component\HttpFoundation\Respon
 
 	return $response;
 
-If you need access to the `Response` class methods, but want to return a view as the response content, you may use the `Response::view` method for convenience:
-
-	return Response::view('hello')->header('Content-Type', $type);
-
 **Attaching Cookies To Responses**
 
 	$cookie = Cookie::make('name', 'value');
@@ -45,7 +40,7 @@ If you need access to the `Response` class methods, but want to return a view as
 	return Redirect::to('user/login');
 
 **Returning A Redirect With Flash Data**
-
+	
 	return Redirect::to('user/login')->with('message', 'Login Failed');
 
 > **Note:** Since the `with` method flashes data to the session, you may retrieve the data using the typical `Session::get` method.
@@ -100,11 +95,7 @@ The second argument passed to `View::make` is an array of data that should be ma
 
 **Passing Data To Views**
 
-	// Using conventional approach
 	$view = View::make('greeting')->with('name', 'Steve');
-
-	// Using Magic Methods
-	$view = View::make('greeting')->withName('steve');
 
 In the example above the variable `$name` would be accessible from the view, and would contain `Steve`.
 
@@ -196,21 +187,3 @@ View **creators** work almost exactly like view composers; however, they are fir
 	return Response::download($pathToFile);
 
 	return Response::download($pathToFile, $name, $headers);
-
-> **Note:** Symfony HttpFoundation, which manages file downloads, requires the file being downloaded to have an ASCII file name.
-
-<a name="response-macros"></a>
-## Response Macros
-
-If you would like to define a custom response that you can re-use in a variety of your routes and controllers, you may use the `Response::macro` method:
-
-	Response::macro('caps', function($value)
-	{
-		return Response::make(strtoupper($value));
-	});
-
-The `macro` function accepts a name as its first argument, and a Closure as its second. The macro's Closure will be executed when calling the macro name on the `Response` class:
-
-	return Response::caps('foo');
-
-You may define your macros in one of your `app/start` files. Alternatively, you may organize your macros into a separate file which is included from one of your `start` files.

@@ -15,13 +15,9 @@ Laravel框架使用[Composer](http://getcomposer.org)（PHP包管理工具）来
 <a name="install-laravel"></a>
 ## 安装Laravel
 
-### Via Laravel Installer
-
-First, download the [Laravel installer PHAR archive](http://laravel.com/laravel.phar). For convenience, rename the file to `laravel` and move it to `/usr/local/bin`. Once installed, the simple `laravel new` command will create a fresh Laravel installation in the directory you specify. For instance, `laravel new blog` would create a directory named `blog` containing a fresh Laravel installation with all dependencies installed. This method of installation is much faster than installing via Composer.
-
 ### 通过 Composer create-project 命令安装Laravel
 
-还可以通过在命令行执行 Composer `create-project` 命令来安装Laravel：
+通过在命令行执行 Composer `create-project` 命令来安装Laravel：
 
 	composer create-project laravel/laravel --prefer-dist
 
@@ -48,7 +44,7 @@ Laravel框架几乎无需配置就可立即使用。你可以自由地快速开�
 
 <a name="permissions"></a>
 ### 权限设置
-Laravel框架有一个目录需要额外设置权限： 需要为 app/storage 目录下的文件设置写权限。
+Laravel框架有一处需要设置权限 —— app/storage 目录下的文件需要服务器上的写权限。
 
 <a name="paths"></a>
 ### 路径设置
