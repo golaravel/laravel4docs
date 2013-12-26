@@ -11,7 +11,7 @@
 
 默认情况下，应用中会默认输出错误详情。这就是说当有错误发生时，你将看到一个详细的堆栈轨迹（stack trace）和错误信息页面。你可以在`app/config/app.php`文件中将`debug`配置选项设为`false`来关闭它。
 
-> **Note:** It is strongly recommended that you turn off error detail in a production environment.
+> **Note:** 强烈建议您在正式产品环境下关闭错误信息。
 
 <a name="handling-errors"></a>
 ## 处理错误
@@ -48,22 +48,23 @@
 
 如果同时有多个异常处理器，应该先定义最通用的，然后定义最具体的异常处理器。例如，处理所有 `Exception` 类型的异常处理器应当在处理 `Illuminate\Encryption\DecryptException` 类型的异常处理器之前。
 
-### Where To Place Error Handlers
+### 在哪里防止错误处理器
+Laravel没有一个默认的地方用来注册错误处理器。Laravel在这一部分为您提供了很多自由的选择。您可以选择在`start/global.php`文件中定义处理器。通常情况下这个文件可以方便的用来存放一些"最早执行的"代码。如果你觉得`start/global.php`变得太臃肿了，那么你可以单独创建一个`app/errors.php` 文件，然后在`start/global.php` 文件中"require" `app/errors.php`文件。还有一个选择，您可以创建一个用来注册这个错误处理器的[service provider](/docs/ioc#service-providers)。再次声明，没有唯一的正确答案。请根据您自己的需求和喜好进行选择。
 
-There is no default "home" for error handler registrations. Laravel offers you freedom in this area. One option is to define the handlers in your `start/global.php` file. In general, this is a convenient location to place any "bootstrapping" code. If that file is getting crowded, you could create an `app/errors.php` file, and `require` that file from your `start/global.php` script. A third option is to create a [service provider](/docs/ioc#service-providers) that registers the handlers. Again, there is no single "correct" answer. Choose a location that you are comfortable with.
 
 <a name="http-exceptions"></a>
 ## HTTP 异常
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401) or even a developer generated 500 error. In order to return such a response, use the following:
+有一些异常是用来描述来自服务端HTTP错误代码的。例如，一个"页面未找到"（404）的错误、"未验证"(401)错误、甚至是一个由开发者自己生成的500错误。您可以通过下面的方法来返回这样的响应。
 
 	App::abort(404);
 
-Optionally, you may provide a response:
+
+您也可以选择返回下面的响应
 
 	App::abort(403, 'Unauthorized action.');
 
-This method may be used at any time during the request's lifecycle.
+这个方法可以在请求生命周期中的任何时候使用。
 
 <a name="handling-404-errors"></a>
 ## 处理404错误
