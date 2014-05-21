@@ -159,6 +159,13 @@ If you would like to set a cookie before a response has been created, use the `C
 **获取 $_SERVER 数组里指定的值**
 
 	$value = Request::server('PATH_INFO');
+	
+**判断请求是否是通过 HTTPS 连接发送过来的**
+
+	if (Request::secure())
+	{
+		//
+	}
 
 **判断是否是使用ajax请求**
 
@@ -167,9 +174,9 @@ If you would like to set a cookie before a response has been created, use the `C
 		//
 	}
 
-**判断请求是否使用https连接**
+**检测是否是任何可能的 JSON 类型的请求**
 
-	if (Request::secure())
+	if (Request::ajax() or Request::isJson() or Request::wantsJson())
 	{
 		//
 	}

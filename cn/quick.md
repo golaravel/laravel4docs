@@ -21,7 +21,7 @@ Laravel框架使用 [Composer](http://getcomposer.org) 执行安装和依赖管�
 <a name="permissions"></a>
 ### 写入权限
 
-安装完 Laravel ，你还需要为web服务器设置 `app/storage` 目录的写入权限。请参考 [安装](/docs/artisan) 一节以获取更多关于配置方面的信息。
+安装完 Laravel ，你还需要为web服务器设置 `app/storage` 目录的写入权限。请参考 [安装](/docs/installation) 一节以获取更多关于配置方面的信息。
 
 <a name="directories"></a>
 ### 目录结构
