@@ -110,6 +110,8 @@ There is not a "default location" for service provider classes. You may put them
 
 在之前的Laravel版本中，`handlers`用来指定那个URI包会响应。然而，在Laravel4中，一个包可以相应任意URI。要在包中加载路由文件，只需在服务提供器的`boot`方法`include`它。
 
+> **注意：** 如果你包中包含控制器，你需要确认你的`composer.json`文件中的auto-load部分已经正确配置。
+
 **在服务提供器中包含路由文件**
 
 	public function boot()
